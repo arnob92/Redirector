@@ -1,4 +1,4 @@
-// server.js — Multi-Country Geo Redirector
+// server.js — Improved Multi-Country Geo Redirector
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -20,7 +20,7 @@ const CITIES_FILE = path.join(__dirname, "cities.json");
 const IPAPI_TIMEOUT_MS = 4000;
 const IPAPI_CACHE_TTL_MS = 1000 * 60 * 60 * 24;
 
-// simple IP cache
+// IP cache
 const ipCache = new Map();
 
 // -------------------------------
@@ -29,7 +29,8 @@ const ipCache = new Map();
 function readCities() {
   try {
     return JSON.parse(fs.readFileSync(CITIES_FILE, "utf8"));
-  } catch {
+  } catch (err) {
+    console.error("Could not read cities.json:", err);
     return { INTERNATIONAL_LINK: "https://example.com/international" };
   }
 }
@@ -51,6 +52,7 @@ function haversineKm(lat1, lon1, lat2, lon2) {
     Math.cos(toRad(lat1)) *
       Math.cos(toRad(lat2)) *
       Math.sin(dLon / 2) ** 2;
+
   return 2 * R * Math.asin(Math.sqrt(a));
 }
 
@@ -76,7 +78,7 @@ async function getIpGeo(ip) {
   const cached = ipCache.get(ip);
   if (cached && cached.expiresAt > now) return cached.data;
 
-  const url = `https://ipapi.co/${encodeURIComponent(ip)}/json/`;
+  const url = `https://ipwho.is/${encodeURIComponent(ip)}`;
 
   try {
     const controller = new AbortController();
@@ -99,7 +101,7 @@ async function getIpGeo(ip) {
 }
 
 // -------------------------------
-// REDIRECT CONTROLLER
+// GEO REDIRECT
 // -------------------------------
 app.get("/redirect", async (req, res) => {
   try {
@@ -109,73 +111,82 @@ app.get("/redirect", async (req, res) => {
     const ip = req.query.testip || getClientIp(req);
     const geo = await getIpGeo(ip);
 
-    console.log("IP:", ip);
+    console.log("Visitor IP:", ip);
     console.log("Geo:", geo);
 
-    // Validate
-    if (!geo || !geo.country_code) return res.redirect(intl);
+    if (!geo || !geo.country_code) {
+      console.warn("Geo lookup failed → international fallback");
+      return res.redirect(intl);
+    }
 
     const country = geo.country_code.toUpperCase();
-
-    // Load this country's sections
     const countrySections = cfg[country];
+
     if (!countrySections || !Array.isArray(countrySections)) {
-      console.warn("Country not found in JSON:", country);
+      console.warn("Country not found:", country);
       return res.redirect(intl);
     }
 
     const lat = parseFloat(geo.latitude);
     const lon = parseFloat(geo.longitude);
 
-    if (!isFinite(lat) || !isFinite(lon)) return res.redirect(intl);
+    if (!isFinite(lat) || !isFinite(lon)) {
+      console.warn("Invalid lat/lon");
+      return res.redirect(intl);
+    }
 
     const regionRaw = (
       geo.region_code ||
       geo.region ||
       ""
-    )
-      .toString()
-      .trim()
-      .toUpperCase();
+    ).toString().trim().toUpperCase();
 
-    // 1) Region filtering
-    function matchRegion(s) {
-      const name = (s.state || s.division || s.name || "")
-        .toString()
-        .toUpperCase();
-      const code = (s.code || "").toString().toUpperCase();
+    // -------------------------------
+    // Region match improvement
+    // -------------------------------
+    const regionMatcher = (s) => {
+      const name = (s.name || "").toUpperCase();
+      const code = (s.code || "").toUpperCase();
+      if (!regionRaw) return false;
 
       return (
         regionRaw === name ||
         regionRaw === code ||
         name.includes(regionRaw) ||
-        regionRaw.includes(name)
+        code.includes(regionRaw)
       );
-    }
+    };
 
-    let possibleStates = countrySections.filter(matchRegion);
-    if (possibleStates.length === 0) possibleStates = countrySections;
+    let matchedStates = countrySections.filter(regionMatcher);
+    if (matchedStates.length === 0) matchedStates = countrySections;
 
-    // 2) Nearest city selection
-    let best = null;
-    let bestD = Infinity;
+    // -------------------------------
+    // Find nearest city
+    // -------------------------------
+    let nearest = null;
+    let bestDist = Infinity;
 
-    for (const st of possibleStates) {
-      if (!Array.isArray(st.cities)) continue;
-      for (const c of st.cities) {
+    for (const state of matchedStates) {
+      if (!Array.isArray(state.cities)) continue;
+      for (const c of state.cities) {
         if (!c.lat || !c.lon) continue;
+
         const d = haversineKm(lat, lon, Number(c.lat), Number(c.lon));
-        if (d < bestD) {
-          best = c;
-          bestD = d;
+        if (d < bestDist) {
+          nearest = c;
+          bestDist = d;
         }
       }
     }
 
-    if (!best || !best.link) return res.redirect(intl);
+    if (!nearest || !nearest.link) {
+      console.warn("No valid city found → international fallback");
+      return res.redirect(intl);
+    }
 
-    console.log("Redirecting to:", best.link);
-    return res.redirect(best.link);
+    console.log("Redirect →", nearest.name, nearest.link, `(${bestDist.toFixed(2)} km)`);
+    return res.redirect(nearest.link);
+
   } catch (err) {
     console.error("Redirect error:", err);
     const cfg = readCities();
@@ -183,28 +194,26 @@ app.get("/redirect", async (req, res) => {
   }
 });
 
-// ROOT → redirect
+// Root route
 app.get("/", (req, res) => res.redirect("/redirect"));
 
 // -------------------------------
 // ADMIN ENDPOINTS
 // -------------------------------
 if (!DISABLE_ADMIN) {
-  function checkAdminToken(req, res, next) {
+  const checkAdminToken = (req, res, next) => {
     const tok = req.headers["x-admin-token"] || req.query.token;
-    if (!tok || tok !== ADMIN_TOKEN)
-      return res.status(401).send("unauthorized");
+    if (tok !== ADMIN_TOKEN) return res.status(401).send("unauthorized");
     next();
-  }
+  };
 
   app.get("/api/cities", checkAdminToken, (req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    res.send(fs.readFileSync(CITIES_FILE, "utf8"));
+    res.type("json").send(fs.readFileSync(CITIES_FILE, "utf8"));
   });
 
   app.post("/api/cities", checkAdminToken, (req, res) => {
     try {
-      const json = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+      const json = JSON.parse(req.body);
       writeCities(json);
       res.send("OK");
     } catch {
@@ -219,7 +228,6 @@ if (!DISABLE_ADMIN) {
   });
 }
 
-// -------------------------------
 app.listen(PORT, () =>
-  console.log(`Geo redirector ready on port ${PORT}`)
+  console.log(`Geo Redirector running on port ${PORT}`)
 );
