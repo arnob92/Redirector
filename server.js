@@ -13,8 +13,8 @@ app.set("trust proxy", true);
 // CONFIG
 // -------------------------------
 const PORT = process.env.PORT || 3000;
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "change_this_token";
-const DISABLE_ADMIN = process.env.DISABLE_ADMIN === "1";
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
+const DISABLE_ADMIN = process.env.DISABLE_ADMIN;
 
 const CITIES_FILE = path.join(__dirname, "cities.json");
 const IPAPI_TIMEOUT_MS = 4000;
