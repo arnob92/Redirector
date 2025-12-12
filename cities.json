@@ -118,7 +118,14 @@
         {
           "name": "Dhaka Division",
           "code": "",
-          "cities": []
+          "cities": [
+            {
+              "name": "Dhaka",
+              "lat": 23.759,
+              "lon": 90.379,
+              "link": "https://dhaka.co"
+            }
+          ]
         },
         {
           "name": "Khulna Division",

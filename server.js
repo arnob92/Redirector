@@ -13,7 +13,7 @@ app.set("trust proxy", true);
 // CONFIG
 // -------------------------------
 const PORT = process.env.PORT || 3000;
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "change_this";
 const DISABLE_ADMIN = process.env.DISABLE_ADMIN === '1';
 
 console.log("Admin panel disabled:", DISABLE_ADMIN ? "yes" : "no");

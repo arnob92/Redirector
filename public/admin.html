@@ -61,6 +61,7 @@
           <div class="text-sm mt-2">Select an item from the left to edit.</div>
         </div>
 
+
         <div id="editorPanel" class="hidden">
           <div class="flex items-center justify-between mb-3">
             <div>
@@ -291,13 +292,25 @@ function renderExplorer(){
       renderExplorer();
     };
     
-    const chevron = document.createElement('svg');
-    chevron.className = `chevron text-purple-400 ${isModelCollapsed ? 'collapsed' : ''}`;
-    chevron.setAttribute('viewBox', '0 0 24 24');
-    chevron.setAttribute('fill', 'none');
-    chevron.setAttribute('stroke', 'currentColor');
-    chevron.setAttribute('stroke-width', '2');
-    chevron.innerHTML = '<path d="M6 9l6 6 6-6"/>';
+    const chevron = document.createElement('div');
+    chevron.className = `chevron ${isModelCollapsed ? 'collapsed' : ''}`;
+    
+    // Model chevron (purple color)
+    chevron.innerHTML = `
+        <svg viewBox="0 -19.04 75.804 75.804" height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="#a78bfa">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <g id="Group_67" data-name="Group 67" transform="translate(-798.203 -587.815)">
+                    <path id="Path_59" data-name="Path 59" 
+                          d="M798.2,589.314a1.5,1.5,0,0,1,2.561-1.06l33.56,33.556a2.528,2.528,0,0,0,3.564,0l33.558-33.556a1.5,1.5,0,1,1,2.121,2.121l-33.558,33.557a5.53,5.53,0,0,1-7.807,0l-33.56-33.557A1.5,1.5,0,0,1,798.2,589.314Z" 
+                          fill="#a78bfa">
+                    </path>
+                </g>
+            </g>
+        </svg>
+    `;
+    
     chevronDiv.appendChild(chevron);
     
     const modelInfo = document.createElement('div');
@@ -340,13 +353,25 @@ function renderExplorer(){
           renderExplorer();
         };
         
-        const cChevron = document.createElement('svg');
-        cChevron.className = `chevron text-blue-400 ${isCountryCollapsed ? 'collapsed' : ''}`;
-        cChevron.setAttribute('viewBox', '0 0 24 24');
-        cChevron.setAttribute('fill', 'none');
-        cChevron.setAttribute('stroke', 'currentColor');
-        cChevron.setAttribute('stroke-width', '2');
-        cChevron.innerHTML = '<path d="M6 9l6 6 6-6"/>';
+        const cChevron = document.createElement('div');
+        cChevron.className = `chevron ${isCountryCollapsed ? 'collapsed' : ''}`;
+        
+        // Country chevron (white color)
+        cChevron.innerHTML = `
+            <svg viewBox="0 -19.04 75.804 75.804" height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <g id="Group_67" data-name="Group 67" transform="translate(-798.203 -587.815)">
+                        <path id="Path_59" data-name="Path 59" 
+                              d="M798.2,589.314a1.5,1.5,0,0,1,2.561-1.06l33.56,33.556a2.528,2.528,0,0,0,3.564,0l33.558-33.556a1.5,1.5,0,1,1,2.121,2.121l-33.558,33.557a5.53,5.53,0,0,1-7.807,0l-33.56-33.557A1.5,1.5,0,0,1,798.2,589.314Z" 
+                              fill="#ffffff">
+                        </path>
+                    </g>
+                </g>
+            </svg>
+        `;
+        
         cChevronDiv.appendChild(cChevron);
         
         const countryInfo = document.createElement('div');
@@ -374,26 +399,43 @@ function renderExplorer(){
             stateDiv.className = 'ml-4 border-l-2 border-white/10';
             
             const stateHeader = document.createElement('div');
-            stateHeader.className = 'p-2 hover:bg-white/4 flex items-center gap-2';
+            stateHeader.className = 'p-2 flex items-center gap-2';
             if(selected && selected.type==='state' && selected.modelName===modelName && selected.countryCode===countryCode && selected.stateIndex===si) {
               stateHeader.classList.add('ring-2','ring-blue-500','bg-white/4');
             }
             
             const sChevronDiv = document.createElement('div');
             sChevronDiv.className = 'cursor-pointer';
-            sChevronDiv.onclick = ()=> {
-              if(isStateCollapsed) collapsed.states.delete(stateKey);
-              else collapsed.states.add(stateKey);
-              renderExplorer();
+            sChevronDiv.onclick = (e) => {
+                e.stopPropagation();
+                const stateKey = `${modelName}-${countryCode}-${si}`;
+                if (isStateCollapsed) {
+                    collapsed.states.delete(stateKey);
+                } else {
+                    collapsed.states.add(stateKey);
+                }
+                renderExplorer();
             };
-            
-            const sChevron = document.createElement('svg');
-            sChevron.className = `chevron text-blue-300 ${isStateCollapsed ? 'collapsed' : ''}`;
-            sChevron.setAttribute('viewBox', '0 0 24 24');
-            sChevron.setAttribute('fill', 'none');
-            sChevron.setAttribute('stroke', 'currentColor');
-            sChevron.setAttribute('stroke-width', '2');
-            sChevron.innerHTML = '<path d="M6 9l6 6 6-6"/>';
+
+            const sChevron = document.createElement('div');
+            sChevron.className = `chevron ${isStateCollapsed ? 'collapsed' : ''}`;
+
+            // State chevron (white color)
+            sChevron.innerHTML = `
+                <svg viewBox="0 -19.04 75.804 75.804" height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g id="Group_67" data-name="Group 67" transform="translate(-798.203 -587.815)">
+                            <path id="Path_59" data-name="Path 59" 
+                                  d="M798.2,589.314a1.5,1.5,0,0,1,2.561-1.06l33.56,33.556a2.528,2.528,0,0,0,3.564,0l33.558-33.556a1.5,1.5,0,1,1,2.121,2.121l-33.558,33.557a5.53,5.53,0,0,1-7.807,0l-33.56-33.557A1.5,1.5,0,0,1,798.2,589.314Z" 
+                                  fill="#ffffff">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+            `;
+
             sChevronDiv.appendChild(sChevron);
             
             const stateInfo = document.createElement('div');
@@ -415,7 +457,7 @@ function renderExplorer(){
             if(!isStateCollapsed && Array.isArray(state.cities)) {
               state.cities.forEach((city, ci) => {
                 const cityDiv = document.createElement('div');
-                cityDiv.className = 'ml-8 p-2 rounded hover:bg-white/5 cursor-pointer';
+                cityDiv.className = 'ml-10 p-2 rounded hover:bg-white/5 cursor-pointer';
                 if(selected && selected.type==='city' && selected.modelName===modelName && selected.countryCode===countryCode && selected.stateIndex===si && selected.cityIndex===ci) {
                   cityDiv.classList.add('ring-2','ring-indigo-500','bg-white/5');
                 }
