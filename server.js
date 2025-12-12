@@ -1,4 +1,4 @@
-// server.js – With Models support and collapsible UI
+// server.js – Model-based geo redirector with country/state structure
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -19,7 +19,7 @@ const DISABLE_ADMIN = process.env.DISABLE_ADMIN === '1';
 console.log("Admin panel disabled:", DISABLE_ADMIN ? "yes" : "no");
 console.log(ADMIN_TOKEN);
 
-const CITIES_FILE = path.join(__dirname, "cities.json");
+const DATA_FILE = path.join(__dirname, "cities.json");
 const IPAPI_TIMEOUT_MS = 4000;
 const IPAPI_CACHE_TTL_MS = 1000 * 60 * 60 * 24;
 
@@ -29,20 +29,17 @@ const ipCache = new Map();
 // -------------------------------
 // Helpers
 // -------------------------------
-function readCities() {
+function readData() {
   try {
-    return JSON.parse(fs.readFileSync(CITIES_FILE, "utf8"));
+    return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
   } catch (err) {
     console.error("Could not read cities.json:", err);
-    return { 
-      INTERNATIONAL_LINK: "https://example.com/international",
-      MODELS: {}
-    };
+    return {};
   }
 }
 
-function writeCities(obj) {
-  fs.writeFileSync(CITIES_FILE, JSON.stringify(obj, null, 2), "utf8");
+function writeData(obj) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(obj, null, 2), "utf8");
 }
 
 function toRad(x) {
@@ -106,111 +103,13 @@ async function getIpGeo(ip) {
   }
 }
 
-// -------------------------------
-// GEO REDIRECT
-// -------------------------------
-app.get("/redirect", async (req, res) => {
-  try {
-    const cfg = readCities();
-    const intl = cfg.INTERNATIONAL_LINK || "https://example.com/international";
-    const models = cfg.MODELS || {};
-
-    const ip = req.query.testip || getClientIp(req);
-    const geo = await getIpGeo(ip);
-
-    console.log("Visitor IP:", ip);
-    console.log("Geo:", geo);
-
-    if (!geo || !geo.country_code) {
-      console.warn("Geo lookup failed → international fallback");
-      return res.redirect(intl);
-    }
-
-    const country = geo.country_code.toUpperCase();
-    const countrySections = cfg[country];
-
-    if (!countrySections || !Array.isArray(countrySections)) {
-      console.warn("Country not found:", country);
-      return res.redirect(intl);
-    }
-
-    const lat = parseFloat(geo.latitude);
-    const lon = parseFloat(geo.longitude);
-
-    if (!isFinite(lat) || !isFinite(lon)) {
-      console.warn("Invalid lat/lon");
-      return res.redirect(intl);
-    }
-
-    const regionRaw = (
-      geo.region_code ||
-      geo.region ||
-      ""
-    ).toString().trim().toUpperCase();
-
-    // Region match improvement
-    const regionMatcher = (s) => {
-      const name = (s.name || "").toUpperCase();
-      const code = (s.code || "").toUpperCase();
-      if (!regionRaw) return false;
-
-      return (
-        regionRaw === name ||
-        regionRaw === code ||
-        name.includes(regionRaw) ||
-        code.includes(regionRaw)
-      );
-    };
-
-    let matchedStates = countrySections.filter(regionMatcher);
-    if (matchedStates.length === 0) matchedStates = countrySections;
-
-    // Find nearest city
-    let nearest = null;
-    let bestDist = Infinity;
-
-    for (const state of matchedStates) {
-      if (!Array.isArray(state.cities)) continue;
-      for (const c of state.cities) {
-        if (c.lat === undefined || c.lon === undefined || c.lat === null || c.lon === null) continue;
-
-        const d = haversineKm(lat, lon, Number(c.lat), Number(c.lon));
-        if (d < bestDist) {
-          nearest = c;
-          bestDist = d;
-        }
-      }
-    }
-
-    if (!nearest) {
-      console.warn("No valid city found → international fallback");
-      return res.redirect(intl);
-    }
-
-    // Resolve model to link
-    let finalLink = intl;
-    if (nearest.model && models[nearest.model]) {
-      finalLink = models[nearest.model];
-    } else if (nearest.link) {
-      // Fallback to direct link if exists (backwards compatibility)
-      finalLink = nearest.link;
-    }
-
-    console.log("Redirect →", nearest.name, finalLink, `(${bestDist.toFixed(2)} km, model: ${nearest.model || 'none'})`);
-    return res.redirect(finalLink);
-
-  } catch (err) {
-    console.error("Redirect error:", err);
-    const cfg = readCities();
-    return res.redirect(cfg.INTERNATIONAL_LINK);
-  }
+// Root route - return nothing
+app.get("/", (req, res) => {
+  res.status(404).send("Not found");
 });
 
-// Root route
-app.get("/", (req, res) => res.redirect("/redirect"));
-
 // -------------------------------
-// ADMIN ENDPOINTS
+// ADMIN UI & API - BEFORE /:model route to avoid conflicts
 // -------------------------------
 if (!DISABLE_ADMIN) {
   const checkAdminToken = (req, res, next) => {
@@ -219,19 +118,25 @@ if (!DISABLE_ADMIN) {
     next();
   };
 
+  // Serve admin UI
+  app.use("/admin", express.static(path.join(__dirname, "public")));
+  app.get("/admin", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "admin.html"));
+  });
+
   // Load full JSON
-  app.get("/api/cities", checkAdminToken, (req, res) => {
-    res.type("json").send(fs.readFileSync(CITIES_FILE, "utf8"));
+  app.get("/api/data", checkAdminToken, (req, res) => {
+    res.type("json").send(fs.readFileSync(DATA_FILE, "utf8"));
   });
 
   // Overwrite entire JSON
-  app.post("/api/cities", checkAdminToken, (req, res) => {
+  app.post("/api/data", checkAdminToken, (req, res) => {
     try {
       const json = JSON.parse(req.body);
-      writeCities(json);
+      writeData(json);
       res.send("OK");
     } catch (err) {
-      console.error("POST /api/cities invalid json", err);
+      console.error("POST /api/data invalid json", err);
       res.status(400).send("invalid json");
     }
   });
@@ -241,13 +146,14 @@ if (!DISABLE_ADMIN) {
   // -------------------------------
   app.post("/api/model/add", checkAdminToken, (req, res) => {
     try {
-      const { name, link } = JSON.parse(req.body || '{}');
-      if (!name || !link) return res.status(400).json({ success: false, error: "missing params" });
+      const { name, default_link } = JSON.parse(req.body || '{}');
+      if (!name || !default_link) return res.status(400).json({ success: false, error: "missing params" });
 
-      const data = readCities();
-      if (!data.MODELS) data.MODELS = {};
-      data.MODELS[name] = link;
-      writeCities(data);
+      const data = readData();
+      if (data[name]) return res.status(400).json({ success: false, error: "model already exists" });
+      
+      data[name] = { default_link, countries: {} };
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -256,37 +162,22 @@ if (!DISABLE_ADMIN) {
 
   app.post("/api/model/update", checkAdminToken, (req, res) => {
     try {
-      const { oldName, name, link } = JSON.parse(req.body || '{}');
+      const { oldName, name, default_link } = JSON.parse(req.body || '{}');
       if (!oldName) return res.status(400).json({ success: false, error: "missing oldName" });
 
-      const data = readCities();
-      if (!data.MODELS || !data.MODELS[oldName]) return res.status(400).json({ success: false, error: "model not found" });
+      const data = readData();
+      if (!data[oldName]) return res.status(400).json({ success: false, error: "model not found" });
       
-      // If name changed, we need to update all cities using this model
+      // If name changed, rename the model
       if (name && name !== oldName) {
-        // Update all cities that reference this model
-        Object.keys(data).forEach(countryKey => {
-          if (countryKey === 'INTERNATIONAL_LINK' || countryKey === 'MODELS') return;
-          if (!Array.isArray(data[countryKey])) return;
-          
-          data[countryKey].forEach(state => {
-            if (!Array.isArray(state.cities)) return;
-            state.cities.forEach(city => {
-              if (city.model === oldName) {
-                city.model = name;
-              }
-            });
-          });
-        });
-        
-        // Update the model itself
-        data.MODELS[name] = link || data.MODELS[oldName];
-        delete data.MODELS[oldName];
-      } else if (link !== undefined) {
-        data.MODELS[oldName] = link;
+        data[name] = data[oldName];
+        delete data[oldName];
+        if (default_link !== undefined) data[name].default_link = default_link;
+      } else if (default_link !== undefined) {
+        data[oldName].default_link = default_link;
       }
       
-      writeCities(data);
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -298,10 +189,9 @@ if (!DISABLE_ADMIN) {
       const { name } = JSON.parse(req.body || '{}');
       if (!name) return res.status(400).json({ success: false, error: "missing name" });
 
-      const data = readCities();
-      if (!data.MODELS) data.MODELS = {};
-      delete data.MODELS[name];
-      writeCities(data);
+      const data = readData();
+      delete data[name];
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -313,16 +203,15 @@ if (!DISABLE_ADMIN) {
   // -------------------------------
   app.post("/api/country/add", checkAdminToken, (req, res) => {
     try {
-      const { code, initialStateName } = JSON.parse(req.body || '{}');
-      if (!code) return res.status(400).json({ success: false, error: "missing code" });
+      const { model, code } = JSON.parse(req.body || '{}');
+      if (!model || !code) return res.status(400).json({ success: false, error: "missing params" });
 
-      const data = readCities();
-      const key = code.toUpperCase();
-      if (!data[key]) data[key] = [];
-      if (initialStateName) {
-        data[key].push({ name: initialStateName, code: '', cities: [] });
-      }
-      writeCities(data);
+      const data = readData();
+      if (!data[model]) return res.status(400).json({ success: false, error: "model not found" });
+      if (!data[model].countries) data[model].countries = {};
+      if (!data[model].countries[code]) data[model].countries[code] = [];
+      
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -331,12 +220,14 @@ if (!DISABLE_ADMIN) {
 
   app.post("/api/country/delete", checkAdminToken, (req, res) => {
     try {
-      const { code } = JSON.parse(req.body || '{}');
-      if (!code) return res.status(400).json({ success: false, error: "missing code" });
+      const { model, code } = JSON.parse(req.body || '{}');
+      if (!model || !code) return res.status(400).json({ success: false, error: "missing params" });
 
-      const data = readCities();
-      delete data[code];
-      writeCities(data);
+      const data = readData();
+      if (!data[model] || !data[model].countries) return res.status(400).json({ success: false, error: "model/country not found" });
+      
+      delete data[model].countries[code];
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -348,13 +239,16 @@ if (!DISABLE_ADMIN) {
   // -------------------------------
   app.post("/api/state/add", checkAdminToken, (req, res) => {
     try {
-      const { country, name, code } = JSON.parse(req.body || '{}');
-      if (!country || !name) return res.status(400).json({ success: false, error: "missing country or name" });
+      const { model, country, name, code } = JSON.parse(req.body || '{}');
+      if (!model || !country || !name) return res.status(400).json({ success: false, error: "missing params" });
 
-      const data = readCities();
-      if (!data[country]) data[country] = [];
-      data[country].push({ name, code: code || '', cities: [] });
-      writeCities(data);
+      const data = readData();
+      if (!data[model] || !data[model].countries || !data[model].countries[country]) {
+        return res.status(400).json({ success: false, error: "model/country not found" });
+      }
+      
+      data[model].countries[country].push({ name, code: code || '', cities: [] });
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -363,14 +257,16 @@ if (!DISABLE_ADMIN) {
 
   app.post("/api/state/delete", checkAdminToken, (req, res) => {
     try {
-      const { country, stateName } = JSON.parse(req.body || '{}');
-      if (!country || !stateName) return res.status(400).json({ success: false, error: "missing params" });
+      const { model, country, stateIndex } = JSON.parse(req.body || '{}');
+      if (!model || !country || stateIndex === undefined) return res.status(400).json({ success: false, error: "missing params" });
 
-      const data = readCities();
-      if (!data[country]) return res.status(400).json({ success: false, error: "country not found" });
-
-      data[country] = data[country].filter(s => s.name !== stateName);
-      writeCities(data);
+      const data = readData();
+      if (!data[model] || !data[model].countries || !data[model].countries[country]) {
+        return res.status(400).json({ success: false, error: "model/country not found" });
+      }
+      
+      data[model].countries[country].splice(stateIndex, 1);
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -378,27 +274,27 @@ if (!DISABLE_ADMIN) {
   });
 
   // -------------------------------
-  // City CRUD - Updated for Models
+  // City CRUD
   // -------------------------------
   app.post("/api/city/add", checkAdminToken, (req, res) => {
     try {
-      const { country, stateName, name, lat, lon, model } = JSON.parse(req.body || '{}');
-      if (!country || !stateName || !name) {
+      const { model, country, stateIndex, name, lat, lon, link } = JSON.parse(req.body || '{}');
+      if (!model || !country || stateIndex === undefined || !name) {
         return res.status(400).json({ success: false, error: "missing params" });
       }
 
-      const data = readCities();
-      const state = data[country]?.find(s => s.name === stateName);
+      const data = readData();
+      const state = data[model]?.countries?.[country]?.[stateIndex];
       if (!state) return res.status(400).json({ success: false, error: "state not found" });
 
-      state.cities = state.cities || [];
+      if (!state.cities) state.cities = [];
       state.cities.push({ 
         name, 
-        lat: lat === undefined || lat === null ? '' : lat, 
-        lon: lon === undefined || lon === null ? '' : lon, 
-        model: model || '' 
+        lat: lat === undefined || lat === null || lat === '' ? '' : lat, 
+        lon: lon === undefined || lon === null || lon === '' ? '' : lon, 
+        link: link || '' 
       });
-      writeCities(data);
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -407,28 +303,22 @@ if (!DISABLE_ADMIN) {
 
   app.post("/api/city/update", checkAdminToken, (req, res) => {
     try {
-      const { country, stateName, cityIndex, name, lat, lon, model } = JSON.parse(req.body || '{}');
+      const { model, country, stateIndex, cityIndex, name, lat, lon, link } = JSON.parse(req.body || '{}');
       
-      if (!country || !stateName || cityIndex === undefined) {
+      if (!model || !country || stateIndex === undefined || cityIndex === undefined) {
         return res.status(400).json({ success: false, error: "missing params" });
       }
 
-      const data = readCities();
-      const state = data[country]?.find(s => s.name === stateName);
-      if (!state) return res.status(400).json({ success: false, error: "state not found" });
-
-      if (!state.cities || !state.cities[cityIndex]) {
-        return res.status(400).json({ success: false, error: "city not found" });
-      }
-
-      const city = state.cities[cityIndex];
+      const data = readData();
+      const city = data[model]?.countries?.[country]?.[stateIndex]?.cities?.[cityIndex];
+      if (!city) return res.status(400).json({ success: false, error: "city not found" });
       
       if (name !== undefined) city.name = name;
       if (lat !== undefined) city.lat = lat;
       if (lon !== undefined) city.lon = lon;
-      if (model !== undefined) city.model = model;
+      if (link !== undefined) city.link = link;
 
-      writeCities(data);
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -437,22 +327,18 @@ if (!DISABLE_ADMIN) {
 
   app.post("/api/city/delete", checkAdminToken, (req, res) => {
     try {
-      const { country, stateName, cityIndex } = JSON.parse(req.body || '{}');
+      const { model, country, stateIndex, cityIndex } = JSON.parse(req.body || '{}');
       
-      if (!country || !stateName || cityIndex === undefined) {
+      if (!model || !country || stateIndex === undefined || cityIndex === undefined) {
         return res.status(400).json({ success: false, error: "missing params" });
       }
 
-      const data = readCities();
-      const state = data[country]?.find(s => s.name === stateName);
-      if (!state) return res.status(400).json({ success: false, error: "state not found" });
-
-      if (!state.cities || !state.cities[cityIndex]) {
-        return res.status(400).json({ success: false, error: "city not found" });
-      }
+      const data = readData();
+      const state = data[model]?.countries?.[country]?.[stateIndex];
+      if (!state || !state.cities) return res.status(400).json({ success: false, error: "state not found" });
 
       state.cities.splice(cityIndex, 1);
-      writeCities(data);
+      writeData(data);
       res.json({ success: true });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
@@ -468,14 +354,93 @@ if (!DISABLE_ADMIN) {
 }
 
 // -------------------------------
-// ADMIN UI SERVE
+// GEO REDIRECT BY MODEL - This comes LAST to avoid conflicts
 // -------------------------------
-if (!DISABLE_ADMIN) {
-  app.use("/admin", express.static(path.join(__dirname, "public")));
-  app.get("/admin", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "admin.html"));
-  });
-}
+app.get("/:model", async (req, res) => {
+  try {
+    const modelKey = req.params.model;
+    const data = readData();
+    const model = data[modelKey];
+
+    if (!model || !model.default_link) {
+      console.warn("Model not found:", modelKey);
+      return res.status(404).send("Model not found");
+    }
+
+    const ip = req.query.testip || getClientIp(req);
+    const geo = await getIpGeo(ip);
+
+    console.log("Model:", modelKey);
+    console.log("Visitor IP:", ip);
+    console.log("Geo:", geo);
+
+    // If no geo data or no countries, use default link
+    if (!geo || !geo.latitude || !geo.longitude || !model.countries) {
+      console.log("Using default link:", model.default_link);
+      return res.redirect(model.default_link);
+    }
+
+    const lat = parseFloat(geo.latitude);
+    const lon = parseFloat(geo.longitude);
+
+    if (!isFinite(lat) || !isFinite(lon)) {
+      console.warn("Invalid lat/lon");
+      return res.redirect(model.default_link);
+    }
+
+    const country = geo.country_code?.toUpperCase();
+    const countrySections = model.countries[country];
+
+    if (!countrySections || !Array.isArray(countrySections)) {
+      console.warn("Country not found in model:", country);
+      return res.redirect(model.default_link);
+    }
+
+    // Find nearest city across all states
+    let nearest = null;
+    let bestDist = Infinity;
+
+    for (const state of countrySections) {
+      if (!Array.isArray(state.cities)) continue;
+      
+      for (const city of state.cities) {
+        if (city.lat === undefined || city.lon === undefined || city.lat === null || city.lon === null) continue;
+        if (city.lat === '' || city.lon === '') continue;
+
+        const d = haversineKm(lat, lon, Number(city.lat), Number(city.lon));
+        if (d < bestDist) {
+          nearest = city;
+          bestDist = d;
+        }
+      }
+    }
+
+    // Determine final link
+    let finalLink = model.default_link;
+    
+    if (nearest) {
+      if (nearest.link && nearest.link.trim() !== '') {
+        finalLink = nearest.link;
+        console.log("Redirect to custom link →", nearest.name, finalLink, `(${bestDist.toFixed(2)} km)`);
+      } else {
+        console.log("Redirect to default link (nearest city has no custom link) →", nearest.name, finalLink, `(${bestDist.toFixed(2)} km)`);
+      }
+    } else {
+      console.log("No valid city found → default link:", finalLink);
+    }
+
+    return res.redirect(finalLink);
+
+  } catch (err) {
+    console.error("Redirect error:", err);
+    const data = readData();
+    const model = data[req.params.model];
+    if (model && model.default_link) {
+      return res.redirect(model.default_link);
+    }
+    return res.status(500).send("Error");
+  }
+});
 
 app.listen(PORT, () =>
   console.log(`Geo Redirector running on port ${PORT}`)

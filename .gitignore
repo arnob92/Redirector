@@ -1,2 +1,4 @@
 /node_modules
 .env
+server1.js
+/public/admin1.html

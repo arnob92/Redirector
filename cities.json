@@ -1,887 +1,138 @@
 {
-  "INTERNATIONAL_LINK": "https://example.com/international",
-  "US": [
-    {
-      "code": "AL",
-      "name": "Alabama",
-      "cities": [
+  "model1": {
+    "default_link": "https://example.com/model1-default",
+    "countries": {
+      "US": [
         {
-          "name": "Birmingham",
-          "lat": 33.5187,
-          "lon": -86.8104,
-          "link": "https://example.com/us/al/birmingham",
-          "model": "ghf"
+          "code": "AL",
+          "name": "Alabama",
+          "cities": [
+            {
+              "name": "Birmingham",
+              "lat": 33.5187,
+              "lon": -86.8104,
+              "link": ""
+            },
+            {
+              "name": "Montgomery",
+              "lat": 32.3793,
+              "lon": -86.3077,
+              "link": "https://example.com/montgomery-special"
+            }
+          ]
         },
         {
-          "name": "Montgomery",
-          "lat": 32.3793,
-          "lon": -86.3077,
-          "link": "https://example.com/us/al/montgomery"
-        }
-      ]
-    },
-    {
-      "code": "AK",
-      "name": "Alaska",
-      "cities": [
-        {
-          "name": "Anchorage",
-          "lat": 61.2181,
-          "lon": -149.9003,
-          "link": "https://example.com/us/ak/anchorage"
+          "code": "CA",
+          "name": "California",
+          "cities": [
+            {
+              "name": "Los Angeles",
+              "lat": 34.0522,
+              "lon": -118.2437,
+              "link": "https://example.com/la-custom"
+            },
+            {
+              "name": "San Francisco",
+              "lat": 37.7749,
+              "lon": -122.4194,
+              "link": ""
+            }
+          ]
         },
         {
-          "name": "Fairbanks",
-          "lat": 64.8378,
-          "lon": -147.7164,
-          "link": "https://example.com/us/ak/fairbanks"
+          "code": "TX",
+          "name": "Texas",
+          "cities": [
+            {
+              "name": "Houston",
+              "lat": 29.7604,
+              "lon": -95.3698,
+              "link": ""
+            },
+            {
+              "name": "Austin",
+              "lat": 30.2672,
+              "lon": -97.7431,
+              "link": "https://example.com/austin-tech"
+            }
+          ]
         }
-      ]
-    },
-    {
-      "code": "AZ",
-      "name": "Arizona",
-      "cities": [
+      ],
+      "BD": [
         {
-          "name": "Phoenix",
-          "lat": 33.4488,
-          "lon": -112.074,
-          "link": "https://example.com/us/az/phoenix"
+          "name": "Dhaka Division",
+          "code": "DH",
+          "cities": [
+            {
+              "name": "Dhaka",
+              "lat": 23.8103,
+              "lon": 90.4125,
+              "link": ""
+            }
+          ]
         },
         {
-          "name": "Tucson",
-          "lat": 32.2226,
-          "lon": -110.9747,
-          "link": "https://example.com/us/az/tucson"
-        }
-      ]
-    },
-    {
-      "code": "AR",
-      "name": "Arkansas",
-      "cities": [
-        {
-          "name": "Little Rock",
-          "lat": 34.7465,
-          "lon": -92.2896,
-          "link": "https://example.com/us/ar/littlerock"
-        },
-        {
-          "name": "Fayetteville",
-          "lat": 36.0822,
-          "lon": -94.1719,
-          "link": "https://example.com/us/ar/fayetteville"
-        }
-      ]
-    },
-    {
-      "code": "CA",
-      "name": "California",
-      "cities": [
-        {
-          "name": "Los Angeles",
-          "lat": 34.0522,
-          "lon": -118.2437,
-          "link": "https://example.com/us/ca/la"
-        },
-        {
-          "name": "San Francisco",
-          "lat": 37.7749,
-          "lon": -122.4194,
-          "link": "https://example.com/us/ca/sf"
-        },
-        {
-          "name": "San Diego",
-          "lat": 32.7157,
-          "lon": -117.1611,
-          "link": "https://example.com/us/ca/sd"
-        }
-      ]
-    },
-    {
-      "code": "CO",
-      "name": "Colorado",
-      "cities": [
-        {
-          "name": "Denver",
-          "lat": 39.7392,
-          "lon": -104.9903,
-          "link": "https://example.com/us/co/denver"
-        },
-        {
-          "name": "Colorado Springs",
-          "lat": 38.8339,
-          "lon": -104.8214,
-          "link": "https://example.com/us/co/cs"
-        }
-      ]
-    },
-    {
-      "code": "CT",
-      "name": "Connecticut",
-      "cities": [
-        {
-          "name": "Hartford",
-          "lat": 41.7658,
-          "lon": -72.6734,
-          "link": "https://example.com/us/ct/hartford"
-        },
-        {
-          "name": "New Haven",
-          "lat": 41.3083,
-          "lon": -72.9279,
-          "link": "https://example.com/us/ct/newhaven"
-        }
-      ]
-    },
-    {
-      "code": "DE",
-      "name": "Delaware",
-      "cities": [
-        {
-          "name": "Wilmington",
-          "lat": 39.7391,
-          "lon": -75.5398,
-          "link": "https://example.com/us/de/wilmington"
-        },
-        {
-          "name": "Dover",
-          "lat": 39.1582,
-          "lon": -75.5244,
-          "link": "https://example.com/us/de/dover"
-        }
-      ]
-    },
-    {
-      "code": "FL",
-      "name": "Florida",
-      "cities": [
-        {
-          "name": "Miami",
-          "lat": 25.7617,
-          "lon": -80.1918,
-          "link": "https://example.com/us/fl/miami"
-        },
-        {
-          "name": "Orlando",
-          "lat": 28.5383,
-          "lon": -81.3792,
-          "link": "https://example.com/us/fl/orlando"
-        },
-        {
-          "name": "Tampa",
-          "lat": 27.9506,
-          "lon": -82.4572,
-          "link": "https://example.com/us/fl/tampa"
-        }
-      ]
-    },
-    {
-      "code": "GA",
-      "name": "Georgia",
-      "cities": [
-        {
-          "name": "Atlanta",
-          "lat": 33.749,
-          "lon": -84.388,
-          "link": "https://example.com/us/ga/atlanta"
-        },
-        {
-          "name": "Savannah",
-          "lat": 32.0809,
-          "lon": -81.0912,
-          "link": "https://example.com/us/ga/savannah"
-        }
-      ]
-    },
-    {
-      "code": "HI",
-      "name": "Hawaii",
-      "cities": [
-        {
-          "name": "Honolulu",
-          "lat": 21.3069,
-          "lon": -157.8583,
-          "link": "https://example.com/us/hi/honolulu"
-        }
-      ]
-    },
-    {
-      "code": "ID",
-      "name": "Idaho",
-      "cities": [
-        {
-          "name": "Boise",
-          "lat": 43.615,
-          "lon": -116.2023,
-          "link": "https://example.com/us/id/boise"
-        }
-      ]
-    },
-    {
-      "code": "IL",
-      "name": "Illinois",
-      "cities": [
-        {
-          "name": "Chicago",
-          "lat": 41.8781,
-          "lon": -87.6298,
-          "link": "https://example.com/us/il/chicago"
-        },
-        {
-          "name": "Springfield",
-          "lat": 39.7817,
-          "lon": -89.6501,
-          "link": "https://example.com/us/il/springfield"
-        }
-      ]
-    },
-    {
-      "code": "IN",
-      "name": "Indiana",
-      "cities": [
-        {
-          "name": "Indianapolis",
-          "lat": 39.7684,
-          "lon": -86.1581,
-          "link": "https://example.com/us/in/indianapolis"
-        }
-      ]
-    },
-    {
-      "code": "IA",
-      "name": "Iowa",
-      "cities": [
-        {
-          "name": "Des Moines",
-          "lat": 41.5868,
-          "lon": -93.625,
-          "link": "https://example.com/us/ia/desmoines"
-        }
-      ]
-    },
-    {
-      "code": "KS",
-      "name": "Kansas",
-      "cities": [
-        {
-          "name": "Wichita",
-          "lat": 37.6872,
-          "lon": -97.3301,
-          "link": "https://example.com/us/ks/wichita"
-        },
-        {
-          "name": "Topeka",
-          "lat": 39.0473,
-          "lon": -95.6752,
-          "link": "https://example.com/us/ks/topeka"
-        }
-      ]
-    },
-    {
-      "code": "KY",
-      "name": "Kentucky",
-      "cities": [
-        {
-          "name": "Louisville",
-          "lat": 38.2527,
-          "lon": -85.7585,
-          "link": "https://example.com/us/ky/louisville"
-        },
-        {
-          "name": "Lexington",
-          "lat": 38.0406,
-          "lon": -84.5037,
-          "link": "https://example.com/us/ky/lexington"
-        }
-      ]
-    },
-    {
-      "code": "LA",
-      "name": "Louisiana",
-      "cities": [
-        {
-          "name": "New Orleans",
-          "lat": 29.9511,
-          "lon": -90.0715,
-          "link": "https://example.com/us/la/neworleans"
-        },
-        {
-          "name": "Baton Rouge",
-          "lat": 30.4515,
-          "lon": -91.1871,
-          "link": "https://example.com/us/la/batonrouge"
-        }
-      ]
-    },
-    {
-      "code": "ME",
-      "name": "Maine",
-      "cities": [
-        {
-          "name": "Portland",
-          "lat": 43.6591,
-          "lon": -70.2568,
-          "link": "https://example.com/us/me/portland"
-        },
-        {
-          "name": "Augusta",
-          "lat": 44.3106,
-          "lon": -69.7795,
-          "link": "https://example.com/us/me/augusta"
-        }
-      ]
-    },
-    {
-      "code": "MD",
-      "name": "Maryland",
-      "cities": [
-        {
-          "name": "Baltimore",
-          "lat": 39.2904,
-          "lon": -76.6122,
-          "link": "https://example.com/us/md/baltimore"
-        },
-        {
-          "name": "Annapolis",
-          "lat": 38.9784,
-          "lon": -76.4922,
-          "link": "https://example.com/us/md/annapolis"
-        }
-      ]
-    },
-    {
-      "code": "MA",
-      "name": "Massachusetts",
-      "cities": [
-        {
-          "name": "Boston",
-          "lat": 42.3601,
-          "lon": -71.0589,
-          "link": "https://example.com/us/ma/boston"
-        },
-        {
-          "name": "Worcester",
-          "lat": 42.2626,
-          "lon": -71.8023,
-          "link": "https://example.com/us/ma/worcester"
-        }
-      ]
-    },
-    {
-      "code": "MI",
-      "name": "Michigan",
-      "cities": [
-        {
-          "name": "Detroit",
-          "lat": 42.3314,
-          "lon": -83.0458,
-          "link": "https://example.com/us/mi/detroit"
-        },
-        {
-          "name": "Grand Rapids",
-          "lat": 42.9634,
-          "lon": -85.6681,
-          "link": "https://example.com/us/mi/grandrapids"
-        }
-      ]
-    },
-    {
-      "code": "MN",
-      "name": "Minnesota",
-      "cities": [
-        {
-          "name": "Minneapolis",
-          "lat": 44.9778,
-          "lon": -93.265,
-          "link": "https://example.com/us/mn/minneapolis"
-        },
-        {
-          "name": "St. Paul",
-          "lat": 44.9537,
-          "lon": -93.09,
-          "link": "https://example.com/us/mn/stpaul"
-        }
-      ]
-    },
-    {
-      "code": "MS",
-      "name": "Mississippi",
-      "cities": [
-        {
-          "name": "Jackson",
-          "lat": 32.2988,
-          "lon": -90.1848,
-          "link": "https://example.com/us/ms/jackson"
-        }
-      ]
-    },
-    {
-      "code": "MO",
-      "name": "Missouri",
-      "cities": [
-        {
-          "name": "St. Louis",
-          "lat": 38.627,
-          "lon": -90.1994,
-          "link": "https://example.com/us/mo/stlouis"
-        },
-        {
-          "name": "Kansas City",
-          "lat": 39.0997,
-          "lon": -94.5786,
-          "link": "https://example.com/us/mo/kansascity"
-        }
-      ]
-    },
-    {
-      "code": "MT",
-      "name": "Montana",
-      "cities": [
-        {
-          "name": "Billings",
-          "lat": 45.7833,
-          "lon": -108.5007,
-          "link": "https://example.com/us/mt/billings"
-        }
-      ]
-    },
-    {
-      "code": "NE",
-      "name": "Nebraska",
-      "cities": [
-        {
-          "name": "Omaha",
-          "lat": 41.2565,
-          "lon": -95.9345,
-          "link": "https://example.com/us/ne/omaha"
-        },
-        {
-          "name": "Lincoln",
-          "lat": 40.8136,
-          "lon": -96.7026,
-          "link": "https://example.com/us/ne/lincoln"
-        }
-      ]
-    },
-    {
-      "code": "NV",
-      "name": "Nevada",
-      "cities": [
-        {
-          "name": "Las Vegas",
-          "lat": 36.1699,
-          "lon": -115.1398,
-          "link": "https://example.com/us/nv/lasvegas"
-        },
-        {
-          "name": "Reno",
-          "lat": 39.5296,
-          "lon": -119.8138,
-          "link": "https://example.com/us/nv/reno"
-        }
-      ]
-    },
-    {
-      "code": "NH",
-      "name": "New Hampshire",
-      "cities": [
-        {
-          "name": "Manchester",
-          "lat": 42.9956,
-          "lon": -71.4548,
-          "link": "https://example.com/us/nh/manchester"
-        },
-        {
-          "name": "Concord",
-          "lat": 43.2081,
-          "lon": -71.5376,
-          "link": "https://example.com/us/nh/concord"
-        }
-      ]
-    },
-    {
-      "code": "NJ",
-      "name": "New Jersey",
-      "cities": [
-        {
-          "name": "Newark",
-          "lat": 40.7357,
-          "lon": -74.1724,
-          "link": "https://example.com/us/nj/newark"
-        },
-        {
-          "name": "Jersey City",
-          "lat": 40.7178,
-          "lon": -74.0431,
-          "link": "https://example.com/us/nj/jerseycity"
-        }
-      ]
-    },
-    {
-      "code": "NM",
-      "name": "New Mexico",
-      "cities": [
-        {
-          "name": "Albuquerque",
-          "lat": 35.0844,
-          "lon": -106.6504,
-          "link": "https://example.com/us/nm/albuquerque"
-        }
-      ]
-    },
-    {
-      "code": "NY",
-      "name": "New York",
-      "cities": [
-        {
-          "name": "New York City",
-          "lat": 40.7128,
-          "lon": -74.006,
-          "link": "https://example.com/us/ny/nyc"
-        },
-        {
-          "name": "Buffalo",
-          "lat": 42.8864,
-          "lon": -78.8784,
-          "link": "https://example.com/us/ny/buffalo"
-        },
-        {
-          "name": "Rochester",
-          "lat": 43.1566,
-          "lon": -77.6088,
-          "link": "https://example.com/us/ny/rochester"
-        }
-      ]
-    },
-    {
-      "code": "NC",
-      "name": "North Carolina",
-      "cities": [
-        {
-          "name": "Charlotte",
-          "lat": 35.2271,
-          "lon": -80.8431,
-          "link": "https://example.com/us/nc/charlotte"
-        },
-        {
-          "name": "Raleigh",
-          "lat": 35.7796,
-          "lon": -78.6382,
-          "link": "https://example.com/us/nc/raleigh"
-        }
-      ]
-    },
-    {
-      "code": "ND",
-      "name": "North Dakota",
-      "cities": [
-        {
-          "name": "Fargo",
-          "lat": 46.8772,
-          "lon": -96.7898,
-          "link": "https://example.com/us/nd/fargo"
-        }
-      ]
-    },
-    {
-      "code": "OH",
-      "name": "Ohio",
-      "cities": [
-        {
-          "name": "Columbus",
-          "lat": 39.9612,
-          "lon": -82.9988,
-          "link": "https://example.com/us/oh/columbus"
-        },
-        {
-          "name": "Cleveland",
-          "lat": 41.4993,
-          "lon": -81.6944,
-          "link": "https://example.com/us/oh/cleveland"
-        }
-      ]
-    },
-    {
-      "code": "OK",
-      "name": "Oklahoma",
-      "cities": [
-        {
-          "name": "Oklahoma City",
-          "lat": 35.4676,
-          "lon": -97.5164,
-          "link": "https://example.com/us/ok/okc"
-        },
-        {
-          "name": "Tulsa",
-          "lat": 36.1539,
-          "lon": -95.9928,
-          "link": "https://example.com/us/ok/tulsa"
-        }
-      ]
-    },
-    {
-      "code": "OR",
-      "name": "Oregon",
-      "cities": [
-        {
-          "name": "Portland",
-          "lat": 45.5051,
-          "lon": -122.675,
-          "link": "https://example.com/us/or/portland"
-        }
-      ]
-    },
-    {
-      "code": "PA",
-      "name": "Pennsylvania",
-      "cities": [
-        {
-          "name": "Philadelphia",
-          "lat": 39.9526,
-          "lon": -75.1652,
-          "link": "https://example.com/us/pa/philly"
-        },
-        {
-          "name": "Pittsburgh",
-          "lat": 40.4406,
-          "lon": -79.9959,
-          "link": "https://example.com/us/pa/pittsburgh"
-        }
-      ]
-    },
-    {
-      "code": "RI",
-      "name": "Rhode Island",
-      "cities": [
-        {
-          "name": "Providence",
-          "lat": 41.824,
-          "lon": -71.4128,
-          "link": "https://example.com/us/ri/providence"
-        }
-      ]
-    },
-    {
-      "code": "SC",
-      "name": "South Carolina",
-      "cities": [
-        {
-          "name": "Charleston",
-          "lat": 32.7765,
-          "lon": -79.9311,
-          "link": "https://example.com/us/sc/charleston"
-        },
-        {
-          "name": "Columbia",
-          "lat": 34.0007,
-          "lon": -81.0348,
-          "link": "https://example.com/us/sc/columbia"
-        }
-      ]
-    },
-    {
-      "code": "SD",
-      "name": "South Dakota",
-      "cities": [
-        {
-          "name": "Sioux Falls",
-          "lat": 43.5446,
-          "lon": -96.7311,
-          "link": "https://example.com/us/sd/siouxfalls"
-        }
-      ]
-    },
-    {
-      "code": "TN",
-      "name": "Tennessee",
-      "cities": [
-        {
-          "name": "Nashville",
-          "lat": 36.1627,
-          "lon": -86.7816,
-          "link": "https://example.com/us/tn/nashville"
-        },
-        {
-          "name": "Memphis",
-          "lat": 35.1495,
-          "lon": -90.049,
-          "link": "https://example.com/us/tn/memphis"
-        }
-      ]
-    },
-    {
-      "code": "TX",
-      "name": "Texas",
-      "cities": [
-        {
-          "name": "Houston",
-          "lat": 29.7604,
-          "lon": -95.3698,
-          "link": "https://example.com/us/tx/houston"
-        },
-        {
-          "name": "Dallas",
-          "lat": 32.7767,
-          "lon": -96.797,
-          "link": "https://example.com/us/tx/dallas"
-        },
-        {
-          "name": "Austin",
-          "lat": 30.2672,
-          "lon": -97.7431,
-          "link": "https://example.com/us/tx/austin"
-        }
-      ]
-    },
-    {
-      "code": "UT",
-      "name": "Utah",
-      "cities": [
-        {
-          "name": "Salt Lake City",
-          "lat": 40.7608,
-          "lon": -111.891,
-          "link": "https://example.com/us/ut/slc"
-        }
-      ]
-    },
-    {
-      "code": "VT",
-      "name": "Vermont",
-      "cities": [
-        {
-          "name": "Burlington",
-          "lat": 44.4759,
-          "lon": -73.2121,
-          "link": "https://example.com/us/vt/burlington"
-        }
-      ]
-    },
-    {
-      "code": "VA",
-      "name": "Virginia",
-      "cities": [
-        {
-          "name": "Virginia Beach",
-          "lat": 36.8529,
-          "lon": -75.978,
-          "link": "https://example.com/us/va/virginiabeach"
-        },
-        {
-          "name": "Richmond",
-          "lat": 37.5407,
-          "lon": -77.436,
-          "link": "https://example.com/us/va/richmond"
-        }
-      ]
-    },
-    {
-      "code": "WA",
-      "name": "Washington",
-      "cities": [
-        {
-          "name": "Seattle",
-          "lat": 47.6062,
-          "lon": -122.3321,
-          "link": "https://example.com/us/wa/seattle"
-        },
-        {
-          "name": "Spokane",
-          "lat": 47.6588,
-          "lon": -117.426,
-          "link": "https://example.com/us/wa/spokane"
-        }
-      ]
-    },
-    {
-      "code": "WV",
-      "name": "West Virginia",
-      "cities": [
-        {
-          "name": "Charleston",
-          "lat": 38.3498,
-          "lon": -81.6326,
-          "link": "https://example.com/us/wv/charleston"
-        }
-      ]
-    },
-    {
-      "code": "WI",
-      "name": "Wisconsin",
-      "cities": [
-        {
-          "name": "Milwaukee",
-          "lat": 43.0389,
-          "lon": -87.9065,
-          "link": "https://example.com/us/wi/milwaukee"
-        },
-        {
-          "name": "Madison",
-          "lat": 43.0731,
-          "lon": -89.4012,
-          "link": "https://example.com/us/wi/madison"
-        }
-      ]
-    },
-    {
-      "code": "WY",
-      "name": "Wyoming",
-      "cities": [
-        {
-          "name": "Cheyenne",
-          "lat": 41.14,
-          "lon": -104.8202,
-          "link": "https://example.com/us/wy/cheyenne"
-        }
-      ]
-    },
-    {
-      "name": "California",
-      "code": "",
-      "cities": []
-    }
-  ],
-  "BD": [
-    {
-      "name": "Dhaka Division",
-      "code": "",
-      "cities": [
-        {
-          "name": "Dhaka",
-          "lat": 21.4,
-          "lon": 91.5,
-          "link": "https://example.com/dhak"
-        },
-        {
-          "name": "Dhaka",
-          "lat": 21.533,
-          "lon": 90.3,
-          "link": "http://someting.com"
-        }
-      ]
-    },
-    {
-      "name": "Khulna Division",
-      "code": "ku",
-      "cities": [
-        {
-          "name": "Khulna",
-          "lat": 22.84,
-          "lon": 89.55,
-          "link": "https://facebook.com/ugrade"
-        },
-        {
-          "name": "Kushtiam",
-          "lat": 24.7434,
-          "lon": 90.39,
-          "link": "https://kushtia.co/k",
-          "model": "ghf"
+          "name": "Khulna Division",
+          "code": "KH",
+          "cities": [
+            {
+              "name": "Khulna",
+              "lat": 22.84,
+              "lon": 89.55,
+              "link": "https://example.com/khulna-special"
+            },
+            {
+              "name": "Kushtia",
+              "lat": 23.9,
+              "lon": 89.12,
+              "link": ""
+            }
+          ]
         }
       ]
     }
-  ],
-  "MODELS": {
-    "ghf": "https://linkedin.com"
+  },
+  "premium": {
+    "default_link": "https://example.com/premium-default",
+    "countries": {
+      "US": [
+        {
+          "code": "NY",
+          "name": "New York",
+          "cities": [
+            {
+              "name": "New York City",
+              "lat": 40.7128,
+              "lon": -74.006,
+              "link": "https://example.com/nyc-premium"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Model2": {
+    "default_link": "https://example.co/model2",
+    "countries": {
+      "BD": [
+        {
+          "name": "Dhaka Division",
+          "code": "",
+          "cities": []
+        },
+        {
+          "name": "Khulna Division",
+          "code": "",
+          "cities": [
+            {
+              "name": "Khulna",
+              "lat": 22.82,
+              "lon": 89.55,
+              "link": ""
+            }
+          ]
+        }
+      ]
+    }
   }
 }

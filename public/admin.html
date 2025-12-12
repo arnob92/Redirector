@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>City Admin – Dark Dashboard</title>
+  <title>Model Admin – Dark Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root { --muted: #9aa7b2; }
@@ -26,8 +26,8 @@
   <div class="max-w-7xl mx-auto p-6">
     <header class="flex items-center gap-4 mb-6">
       <div>
-        <h1 class="text-2xl font-semibold">City Management – Admin</h1>
-        <p class="muted text-sm">Models → Country → State → City. Click chevrons to collapse/expand.</p>
+        <h1 class="text-2xl font-semibold">Model Management – Admin</h1>
+        <p class="muted text-sm">Model → Country → State → City. All collapsible hierarchy.</p>
       </div>
 
       <div class="flex-1"></div>
@@ -48,41 +48,17 @@
           <div class="text-sm muted">Explorer</div>
           <div class="flex gap-2">
             <button id="btnAddModel" class="px-3 py-1 rounded bg-purple-600 hover:bg-purple-700 text-sm">+ Model</button>
-            <button id="btnAddCountry" class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-sm">+ Country</button>
             <button id="btnReload" class="px-3 py-1 rounded bg-white/5 text-sm">Reload</button>
           </div>
         </div>
 
-        <div class="mb-4">
-          <label class="block text-xs muted mb-1">INTERNATIONAL_LINK</label>
-          <div class="flex gap-2">
-            <input id="internationalLink" class="flex-1 px-3 py-2 rounded bg-transparent border border-white/6 text-sm" placeholder="https://example.com/international" />
-            <button id="btnSaveIntlLink" class="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-sm">Save</button>
-          </div>
-        </div>
-
-        <!-- Models Section -->
-        <div class="mb-4 border border-purple-500/30 rounded-lg p-3">
-          <div class="flex items-center justify-between mb-2 cursor-pointer" id="modelsHeader">
-            <div class="flex items-center gap-2">
-              <svg class="chevron text-purple-400" id="modelsChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"/>
-              </svg>
-              <span class="font-medium text-purple-400">Models</span>
-              <span class="text-xs muted" id="modelCount">0</span>
-            </div>
-          </div>
-          <div id="modelsList" class="space-y-1"></div>
-        </div>
-
-        <!-- Countries List -->
         <div id="listBox" class="space-y-3"></div>
       </section>
 
       <section class="col-span-5 glass rounded-xl p-5 h-[75vh] overflow-auto">
         <div id="editorEmpty" class="h-full flex flex-col items-center justify-center muted">
           <div class="text-lg">No item selected</div>
-          <div class="text-sm mt-2">Select a model / country / state / city from the left to edit.</div>
+          <div class="text-sm mt-2">Select an item from the left to edit.</div>
         </div>
 
         <div id="editorPanel" class="hidden">
@@ -92,32 +68,47 @@
               <h2 id="editTitle" class="text-xl font-semibold"></h2>
             </div>
             <div class="flex gap-2">
-              <button id="btnAddChild" class="px-3 py-1 rounded bg-emerald-600 text-sm">Add Child</button>
+              <button id="btnAddChild" class="px-3 py-1 rounded bg-emerald-600 text-sm hidden">Add Child</button>
               <button id="btnDelete" class="px-3 py-1 rounded bg-red-600 text-sm">Delete</button>
             </div>
           </div>
 
           <div class="space-y-3">
-            <div>
-              <label class="text-xs muted">Name</label>
-              <input id="fieldName" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
-            </div>
-            <div id="codeField">
-              <label class="text-xs muted">Code / Key</label>
-              <input id="fieldCode" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
-            </div>
-
-            <div id="modelLinkField" class="hidden">
-              <label class="text-xs muted">Model Link (URL)</label>
-              <input id="fieldModelLink" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
+            <div id="modelFields" class="hidden space-y-3">
+              <div>
+                <label class="text-xs muted">Model Name</label>
+                <input id="fieldModelName" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
+              </div>
+              <div>
+                <label class="text-xs muted">Default Link</label>
+                <input id="fieldDefaultLink" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
+              </div>
             </div>
 
-            <div id="cityFields" class="hidden">
-              <label class="text-xs muted">Model</label>
-              <select id="fieldModel" class="w-full px-3 py-2 rounded bg-slate-900 border border-white/6">
-                <option value="">-- Select Model --</option>
-              </select>
-              <div class="grid grid-cols-2 gap-3 mt-2">
+            <div id="countryFields" class="hidden space-y-3">
+              <div>
+                <label class="text-xs muted">Country Code</label>
+                <input id="fieldCountryCode" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" placeholder="US, BD, etc." />
+              </div>
+            </div>
+
+            <div id="stateFields" class="hidden space-y-3">
+              <div>
+                <label class="text-xs muted">State/Region Name</label>
+                <input id="fieldStateName" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
+              </div>
+              <div>
+                <label class="text-xs muted">State Code (optional)</label>
+                <input id="fieldStateCode" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
+              </div>
+            </div>
+
+            <div id="cityFields" class="hidden space-y-3">
+              <div>
+                <label class="text-xs muted">City Name</label>
+                <input id="fieldCityName" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
+              </div>
+              <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label class="text-xs muted">Latitude</label>
                   <input id="fieldLat" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
@@ -127,16 +118,19 @@
                   <input id="fieldLon" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
                 </div>
               </div>
+              <div>
+                <label class="text-xs muted">Custom Link (leave empty to use model default)</label>
+                <input id="fieldCityLink" class="w-full px-3 py-2 rounded bg-transparent border border-white/6" />
+              </div>
             </div>
 
             <div class="flex items-center gap-3">
               <button id="btnUpdate" class="px-4 py-2 rounded bg-blue-600">Update</button>
               <button id="btnReset" class="px-4 py-2 rounded border border-white/10">Reset</button>
-              <div id="editorNote" class="muted text-sm"></div>
             </div>
 
             <div>
-              <label class="text-xs muted">Raw JSON (preview)</label>
+              <label class="text-xs muted">Raw JSON</label>
               <pre id="rawPreview" class="bg-black/30 text-xs p-3 rounded max-h-48 overflow-auto"></pre>
             </div>
           </div>
@@ -150,7 +144,6 @@
     <button id="toastClose" class="text-white/60">✕</button>
   </div>
 
-  <!-- Token Input Modal -->
   <div id="tokenPanel" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
     <div class="bg-slate-900 border border-white/10 rounded-lg p-6 max-w-md w-full mx-4">
       <h3 class="text-lg font-semibold mb-3">Admin Token</h3>
@@ -163,39 +156,41 @@
   </div>
 
 <script>
-let citiesData = null;
+let appData = null;
 let selected = null;
 let adminToken = localStorage.getItem('adminToken') || null;
 let originalData = null;
-let collapsedCountries = new Set();
-let collapsedStates = new Set();
-let modelsCollapsed = false;
+let collapsed = {
+  models: new Set(),
+  countries: new Set(),
+  states: new Set()
+};
 
 const listBox = document.getElementById('listBox');
 const btnAddModel = document.getElementById('btnAddModel');
-const btnAddCountry = document.getElementById('btnAddCountry');
 const btnReload = document.getElementById('btnReload');
-const internationalLinkInput = document.getElementById('internationalLink');
-const btnSaveIntlLink = document.getElementById('btnSaveIntlLink');
-
-const modelsList = document.getElementById('modelsList');
-const modelsHeader = document.getElementById('modelsHeader');
-const modelsChevron = document.getElementById('modelsChevron');
-const modelCount = document.getElementById('modelCount');
 
 const editorEmpty = document.getElementById('editorEmpty');
 const editorPanel = document.getElementById('editorPanel');
 const editPath = document.getElementById('editPath');
 const editTitle = document.getElementById('editTitle');
-const fieldName = document.getElementById('fieldName');
-const fieldCode = document.getElementById('fieldCode');
-const codeField = document.getElementById('codeField');
-const modelLinkField = document.getElementById('modelLinkField');
-const fieldModelLink = document.getElementById('fieldModelLink');
+
+const modelFields = document.getElementById('modelFields');
+const fieldModelName = document.getElementById('fieldModelName');
+const fieldDefaultLink = document.getElementById('fieldDefaultLink');
+
+const countryFields = document.getElementById('countryFields');
+const fieldCountryCode = document.getElementById('fieldCountryCode');
+
+const stateFields = document.getElementById('stateFields');
+const fieldStateName = document.getElementById('fieldStateName');
+const fieldStateCode = document.getElementById('fieldStateCode');
+
 const cityFields = document.getElementById('cityFields');
-const fieldModel = document.getElementById('fieldModel');
+const fieldCityName = document.getElementById('fieldCityName');
 const fieldLat = document.getElementById('fieldLat');
 const fieldLon = document.getElementById('fieldLon');
+const fieldCityLink = document.getElementById('fieldCityLink');
 const rawPreview = document.getElementById('rawPreview');
 
 const btnAddChild = document.getElementById('btnAddChild');
@@ -221,12 +216,6 @@ function showToast(msg, t=3000){
 }
 toastClose.onclick = ()=> { toast.classList.add('hidden'); clearTimeout(toast._t); };
 
-function safeKeys(obj){ return Object.keys(obj||{}).filter(k=>k!=='INTERNATIONAL_LINK' && k!=='MODELS'); }
-function ensureData(){ 
-  if(!citiesData) citiesData = { INTERNATIONAL_LINK: '', MODELS: {} }; 
-  if(!('INTERNATIONAL_LINK' in citiesData)) citiesData.INTERNATIONAL_LINK = ''; 
-  if(!('MODELS' in citiesData)) citiesData.MODELS = {};
-}
 function isValidCoord(x){ 
   return x === '' || x === null || x === undefined || /^-?\d+(\.\d+)?$/.test(String(x).trim()); 
 }
@@ -239,7 +228,6 @@ function normalizeValue(val) {
 }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// Token Management
 tokenHotspot.addEventListener('click', ()=> {
   tokenPanel.classList.remove('hidden');
   tokenPanel.classList.add('flex');
@@ -252,7 +240,7 @@ btnTokenSave.addEventListener('click', ()=> {
     localStorage.setItem('adminToken', adminToken);
     tokenPanel.classList.add('hidden');
     tokenPanel.classList.remove('flex');
-    loadCities();
+    loadData();
   }
 });
 
@@ -266,105 +254,45 @@ tokenVisible.addEventListener('keydown', (e)=> {
   if(e.key === 'Escape') btnTokenCancel.click();
 });
 
-// Models Collapse
-modelsHeader.addEventListener('click', ()=> {
-  modelsCollapsed = !modelsCollapsed;
-  if(modelsCollapsed) {
-    modelsChevron.classList.add('collapsed');
-    modelsList.classList.add('hidden');
-  } else {
-    modelsChevron.classList.remove('collapsed');
-    modelsList.classList.remove('hidden');
-  }
-});
-
-function renderModels(){
-  ensureData();
-  const models = citiesData.MODELS || {};
-  const names = Object.keys(models);
-  
-  modelCount.textContent = names.length;
-  modelsList.innerHTML = '';
-  
-  if(names.length === 0) {
-    modelsList.innerHTML = '<div class="text-xs muted ml-6">No models defined</div>';
-    return;
-  }
-  
-  names.forEach(name => {
-    const link = models[name];
-    const div = document.createElement('div');
-    div.className = 'ml-6 p-2 rounded hover:bg-white/3 cursor-pointer flex items-center justify-between';
-    if(selected && selected.type==='model' && selected.modelName===name) {
-      div.classList.add('ring-2','ring-purple-500','bg-white/3');
-    }
-    
-    div.onclick = ()=> selectModel(name);
-    
-    const left = document.createElement('div');
-    left.innerHTML = `<div class="font-medium text-sm">${escapeHtml(name)}</div><div class="text-xs muted">${escapeHtml(link)}</div>`;
-    
-    div.appendChild(left);
-    modelsList.appendChild(div);
-  });
-}
-
-function updateModelDropdown(){
-  ensureData();
-  const models = citiesData.MODELS || {};
-  const names = Object.keys(models);
-  
-  fieldModel.innerHTML = '<option value="">-- Select Model --</option>';
-  names.forEach(name => {
-    const opt = document.createElement('option');
-    opt.value = name;
-    opt.textContent = name;
-    fieldModel.appendChild(opt);
-  });
-}
-
 function renderExplorer(){
   listBox.innerHTML = '';
-  renderModels();
   
-  if(!citiesData){ 
+  if(!appData){ 
     listBox.innerHTML = '<div class="muted text-sm">No data loaded</div>'; 
     return; 
   }
 
-  const keys = safeKeys(citiesData);
-  if(keys.length === 0) { 
-    listBox.innerHTML = '<div class="muted text-sm">No countries</div>'; 
+  const modelNames = Object.keys(appData);
+  if(modelNames.length === 0) { 
+    listBox.innerHTML = '<div class="muted text-sm">No models</div>'; 
     return; 
   }
 
-  keys.forEach(countryKey => {
-    const isCollapsed = collapsedCountries.has(countryKey);
+  modelNames.forEach(modelName => {
+    const model = appData[modelName];
+    const modelKey = modelName;
+    const isModelCollapsed = collapsed.models.has(modelKey);
     
-    const countryBox = document.createElement('div');
-    countryBox.className = 'border border-white/10 rounded-lg overflow-hidden';
+    const modelBox = document.createElement('div');
+    modelBox.className = 'border border-purple-500/30 rounded-lg overflow-hidden mb-3';
     
-    // Country Header
-    const countryHeader = document.createElement('div');
-    countryHeader.className = 'p-3 hover:bg-white/2 flex items-center gap-3';
-    if(selected && selected.type==='country' && selected.countryKey===countryKey) {
-      countryHeader.classList.add('ring-2','ring-blue-600','bg-white/2');
+    // Model Header
+    const modelHeader = document.createElement('div');
+    modelHeader.className = 'p-3 hover:bg-white/2 flex items-center gap-3';
+    if(selected && selected.type==='model' && selected.modelName===modelName) {
+      modelHeader.classList.add('ring-2','ring-purple-600','bg-white/2');
     }
     
-    // Chevron
     const chevronDiv = document.createElement('div');
     chevronDiv.className = 'cursor-pointer';
     chevronDiv.onclick = ()=> {
-      if(isCollapsed) {
-        collapsedCountries.delete(countryKey);
-      } else {
-        collapsedCountries.add(countryKey);
-      }
+      if(isModelCollapsed) collapsed.models.delete(modelKey);
+      else collapsed.models.add(modelKey);
       renderExplorer();
     };
     
     const chevron = document.createElement('svg');
-    chevron.className = `chevron text-blue-400 ${isCollapsed ? 'collapsed' : ''}`;
+    chevron.className = `chevron text-purple-400 ${isModelCollapsed ? 'collapsed' : ''}`;
     chevron.setAttribute('viewBox', '0 0 24 24');
     chevron.setAttribute('fill', 'none');
     chevron.setAttribute('stroke', 'currentColor');
@@ -372,103 +300,142 @@ function renderExplorer(){
     chevron.innerHTML = '<path d="M6 9l6 6 6-6"/>';
     chevronDiv.appendChild(chevron);
     
-    // Country Info
-    const countryInfo = document.createElement('div');
-    countryInfo.className = 'flex-1 cursor-pointer';
-    countryInfo.innerHTML = `<div class="font-medium">${countryKey}</div><div class="text-xs muted">${(citiesData[countryKey]||[]).length} states</div>`;
-    countryInfo.onclick = ()=> selectCountry(countryKey);
+    const modelInfo = document.createElement('div');
+    modelInfo.className = 'flex-1 cursor-pointer';
+    const countryCount = Object.keys(model.countries || {}).length;
+    modelInfo.innerHTML = `<div class="font-medium text-purple-400">${escapeHtml(modelName)}</div><div class="text-xs muted">${countryCount} countries • ${escapeHtml(model.default_link || '-')}</div>`;
+    modelInfo.onclick = ()=> selectModel(modelName);
     
-    // Add State Button
-    const rightSide = document.createElement('div');
-    const addStateBtn = document.createElement('button');
-    addStateBtn.className='text-sm px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700';
-    addStateBtn.textContent='+ State';
-    addStateBtn.onclick = (e)=> { e.stopPropagation(); selectCountry(countryKey); addState(countryKey); };
-    rightSide.appendChild(addStateBtn);
+    const addCountryBtn = document.createElement('button');
+    addCountryBtn.className='text-sm px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700';
+    addCountryBtn.textContent='+ Country';
+    addCountryBtn.onclick = (e)=> { e.stopPropagation(); addCountry(modelName); };
     
-    countryHeader.appendChild(chevronDiv);
-    countryHeader.appendChild(countryInfo);
-    countryHeader.appendChild(rightSide);
-    countryBox.appendChild(countryHeader);
+    modelHeader.appendChild(chevronDiv);
+    modelHeader.appendChild(modelInfo);
+    modelHeader.appendChild(addCountryBtn);
+    modelBox.appendChild(modelHeader);
 
-    // States (if not collapsed)
-    if(!isCollapsed) {
-      const states = citiesData[countryKey] || [];
-      states.forEach((st, si) => {
-        const stateKey = `${countryKey}-${si}`;
-        const isStateCollapsed = collapsedStates.has(stateKey);
+    // Countries
+    if(!isModelCollapsed && model.countries) {
+      Object.keys(model.countries).forEach(countryCode => {
+        const countryKey = `${modelName}-${countryCode}`;
+        const isCountryCollapsed = collapsed.countries.has(countryKey);
+        const states = model.countries[countryCode];
         
-        const stDiv = document.createElement('div');
-        stDiv.className = 'ml-4 border-l-2 border-white/10';
+        const countryDiv = document.createElement('div');
+        countryDiv.className = 'ml-4 border-l-2 border-white/10';
         
-        const stHeader = document.createElement('div');
-        stHeader.className = 'p-2 hover:bg-white/3 flex items-center gap-2';
-        if(selected && selected.type==='state' && selected.countryKey===countryKey && selected.stateIndex===si) {
-          stHeader.classList.add('ring-2','ring-blue-500','bg-white/3');
+        const countryHeader = document.createElement('div');
+        countryHeader.className = 'p-2 hover:bg-white/3 flex items-center gap-2';
+        if(selected && selected.type==='country' && selected.modelName===modelName && selected.countryCode===countryCode) {
+          countryHeader.classList.add('ring-2','ring-blue-600','bg-white/3');
         }
         
-        // State Chevron
-        const stChevronDiv = document.createElement('div');
-        stChevronDiv.className = 'cursor-pointer';
-        stChevronDiv.onclick = ()=> {
-          if(isStateCollapsed) {
-            collapsedStates.delete(stateKey);
-          } else {
-            collapsedStates.add(stateKey);
-          }
+        const cChevronDiv = document.createElement('div');
+        cChevronDiv.className = 'cursor-pointer';
+        cChevronDiv.onclick = ()=> {
+          if(isCountryCollapsed) collapsed.countries.delete(countryKey);
+          else collapsed.countries.add(countryKey);
           renderExplorer();
         };
         
-        const stChevron = document.createElement('svg');
-        stChevron.className = `chevron text-blue-300 ${isStateCollapsed ? 'collapsed' : ''}`;
-        stChevron.setAttribute('viewBox', '0 0 24 24');
-        stChevron.setAttribute('fill', 'none');
-        stChevron.setAttribute('stroke', 'currentColor');
-        stChevron.setAttribute('stroke-width', '2');
-        stChevron.innerHTML = '<path d="M6 9l6 6 6-6"/>';
-        stChevronDiv.appendChild(stChevron);
+        const cChevron = document.createElement('svg');
+        cChevron.className = `chevron text-blue-400 ${isCountryCollapsed ? 'collapsed' : ''}`;
+        cChevron.setAttribute('viewBox', '0 0 24 24');
+        cChevron.setAttribute('fill', 'none');
+        cChevron.setAttribute('stroke', 'currentColor');
+        cChevron.setAttribute('stroke-width', '2');
+        cChevron.innerHTML = '<path d="M6 9l6 6 6-6"/>';
+        cChevronDiv.appendChild(cChevron);
         
-        // State Info
-        const stInfo = document.createElement('div');
-        stInfo.className = 'flex-1 cursor-pointer';
-        stInfo.innerHTML = `<div class="font-medium text-sm">${escapeHtml(st.name || '(unnamed)')}</div><div class="text-xs muted">${Array.isArray(st.cities)?st.cities.length:0} cities</div>`;
-        stInfo.onclick = ()=> selectState(countryKey, si);
+        const countryInfo = document.createElement('div');
+        countryInfo.className = 'flex-1 cursor-pointer';
+        countryInfo.innerHTML = `<div class="font-medium text-sm">${escapeHtml(countryCode)}</div><div class="text-xs muted">${Array.isArray(states) ? states.length : 0} states</div>`;
+        countryInfo.onclick = ()=> selectCountry(modelName, countryCode);
         
-        // Add City Button
-        const stRight = document.createElement('div');
-        const addCityBtn = document.createElement('button');
-        addCityBtn.className='text-sm px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700';
-        addCityBtn.textContent='+ City';
-        addCityBtn.onclick = (e)=> { e.stopPropagation(); selectState(countryKey, si); addCity(countryKey, si); };
-        stRight.appendChild(addCityBtn);
+        const addStateBtn = document.createElement('button');
+        addStateBtn.className='text-sm px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700';
+        addStateBtn.textContent='+ State';
+        addStateBtn.onclick = (e)=> { e.stopPropagation(); addState(modelName, countryCode); };
         
-        stHeader.appendChild(stChevronDiv);
-        stHeader.appendChild(stInfo);
-        stHeader.appendChild(stRight);
-        stDiv.appendChild(stHeader);
-
-        // Cities (if not collapsed)
-        if(!isStateCollapsed && Array.isArray(st.cities)) {
-          st.cities.forEach((ct, ci) => {
-            const ctDiv = document.createElement('div');
-            ctDiv.className = 'ml-4 p-2 rounded hover:bg-white/4 cursor-pointer';
-            if(selected && selected.type==='city' && selected.countryKey===countryKey && selected.stateIndex===si && selected.cityIndex===ci) {
-              ctDiv.classList.add('ring-2','ring-indigo-500','bg-white/4');
-            }
-
-            const modelName = ct.model || '(no model)';
+        countryHeader.appendChild(cChevronDiv);
+        countryHeader.appendChild(countryInfo);
+        countryHeader.appendChild(addStateBtn);
+        countryDiv.appendChild(countryHeader);
+        
+        // States
+        if(!isCountryCollapsed && Array.isArray(states)) {
+          states.forEach((state, si) => {
+            const stateKey = `${modelName}-${countryCode}-${si}`;
+            const isStateCollapsed = collapsed.states.has(stateKey);
             
-            ctDiv.innerHTML = `<div class="font-medium text-sm">${escapeHtml(ct.name||'(unnamed)')}</div><div class="text-xs muted">Model: ${escapeHtml(modelName)} • ${escapeHtml(String(ct.lat||'-'))}, ${escapeHtml(String(ct.lon||'-'))}</div>`;
-            ctDiv.onclick = ()=> selectCity(countryKey, si, ci);
-            stDiv.appendChild(ctDiv);
+            const stateDiv = document.createElement('div');
+            stateDiv.className = 'ml-4 border-l-2 border-white/10';
+            
+            const stateHeader = document.createElement('div');
+            stateHeader.className = 'p-2 hover:bg-white/4 flex items-center gap-2';
+            if(selected && selected.type==='state' && selected.modelName===modelName && selected.countryCode===countryCode && selected.stateIndex===si) {
+              stateHeader.classList.add('ring-2','ring-blue-500','bg-white/4');
+            }
+            
+            const sChevronDiv = document.createElement('div');
+            sChevronDiv.className = 'cursor-pointer';
+            sChevronDiv.onclick = ()=> {
+              if(isStateCollapsed) collapsed.states.delete(stateKey);
+              else collapsed.states.add(stateKey);
+              renderExplorer();
+            };
+            
+            const sChevron = document.createElement('svg');
+            sChevron.className = `chevron text-blue-300 ${isStateCollapsed ? 'collapsed' : ''}`;
+            sChevron.setAttribute('viewBox', '0 0 24 24');
+            sChevron.setAttribute('fill', 'none');
+            sChevron.setAttribute('stroke', 'currentColor');
+            sChevron.setAttribute('stroke-width', '2');
+            sChevron.innerHTML = '<path d="M6 9l6 6 6-6"/>';
+            sChevronDiv.appendChild(sChevron);
+            
+            const stateInfo = document.createElement('div');
+            stateInfo.className = 'flex-1 cursor-pointer';
+            stateInfo.innerHTML = `<div class="font-medium text-sm">${escapeHtml(state.name || '(unnamed)')}</div><div class="text-xs muted">${Array.isArray(state.cities) ? state.cities.length : 0} cities</div>`;
+            stateInfo.onclick = ()=> selectState(modelName, countryCode, si);
+            
+            const addCityBtn = document.createElement('button');
+            addCityBtn.className='text-sm px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700';
+            addCityBtn.textContent='+ City';
+            addCityBtn.onclick = (e)=> { e.stopPropagation(); addCity(modelName, countryCode, si); };
+            
+            stateHeader.appendChild(sChevronDiv);
+            stateHeader.appendChild(stateInfo);
+            stateHeader.appendChild(addCityBtn);
+            stateDiv.appendChild(stateHeader);
+            
+            // Cities
+            if(!isStateCollapsed && Array.isArray(state.cities)) {
+              state.cities.forEach((city, ci) => {
+                const cityDiv = document.createElement('div');
+                cityDiv.className = 'ml-8 p-2 rounded hover:bg-white/5 cursor-pointer';
+                if(selected && selected.type==='city' && selected.modelName===modelName && selected.countryCode===countryCode && selected.stateIndex===si && selected.cityIndex===ci) {
+                  cityDiv.classList.add('ring-2','ring-indigo-500','bg-white/5');
+                }
+                
+                const linkText = city.link && city.link.trim() ? city.link : '(default)';
+                cityDiv.innerHTML = `<div class="font-medium text-sm">${escapeHtml(city.name||'(unnamed)')}</div><div class="text-xs muted">${escapeHtml(String(city.lat||'-'))}, ${escapeHtml(String(city.lon||'-'))} • ${escapeHtml(linkText)}</div>`;
+                cityDiv.onclick = ()=> selectCity(modelName, countryCode, si, ci);
+                stateDiv.appendChild(cityDiv);
+              });
+            }
+            
+            countryDiv.appendChild(stateDiv);
           });
         }
         
-        countryBox.appendChild(stDiv);
+        modelBox.appendChild(countryDiv);
       });
     }
 
-    listBox.appendChild(countryBox);
+    listBox.appendChild(modelBox);
   });
 }
 
@@ -478,20 +445,20 @@ function selectModel(modelName){
   renderExplorer();
 }
 
-function selectCountry(countryKey){
-  selected = { type:'country', countryKey };
+function selectCountry(modelName, countryCode){
+  selected = { type:'country', modelName, countryCode };
   showEditor();
   renderExplorer();
 }
 
-function selectState(countryKey, stateIndex){
-  selected = { type:'state', countryKey, stateIndex };
+function selectState(modelName, countryCode, stateIndex){
+  selected = { type:'state', modelName, countryCode, stateIndex };
   showEditor();
   renderExplorer();
 }
 
-function selectCity(countryKey, stateIndex, cityIndex){
-  selected = { type:'city', countryKey, stateIndex, cityIndex };
+function selectCity(modelName, countryCode, stateIndex, cityIndex){
+  selected = { type:'city', modelName, countryCode, stateIndex, cityIndex };
   showEditor();
   renderExplorer();
 }
@@ -506,169 +473,160 @@ function showEditor(){
   editorEmpty.classList.add('hidden'); 
   editorPanel.classList.remove('hidden');
 
-  // Reset all fields
-  codeField.classList.remove('hidden');
-  modelLinkField.classList.add('hidden');
+  modelFields.classList.add('hidden');
+  countryFields.classList.add('hidden');
+  stateFields.classList.add('hidden');
   cityFields.classList.add('hidden');
-  btnAddChild.classList.remove('hidden');
+  btnAddChild.classList.add('hidden');
 
   if(selected.type==='model'){
-    const link = citiesData.MODELS[selected.modelName];
-    editPath.textContent = `Model • ${selected.modelName}`;
-    editTitle.textContent = 'Model';
-    fieldName.value = selected.modelName;
-    codeField.classList.add('hidden');
-    modelLinkField.classList.remove('hidden');
-    fieldModelLink.value = link || '';
-    btnAddChild.classList.add('hidden');
-    rawPreview.textContent = JSON.stringify({ name: selected.modelName, link: link }, null, 2);
-    originalData = { name: selected.modelName, link: link || '' };
+    const model = appData[selected.modelName];
+    editPath.textContent = `Model`;
+    editTitle.textContent = selected.modelName;
+    modelFields.classList.remove('hidden');
+    btnAddChild.classList.remove('hidden');
+    btnAddChild.textContent = '+ Country';
+    fieldModelName.value = selected.modelName;
+    fieldDefaultLink.value = model.default_link || '';
+    rawPreview.textContent = JSON.stringify(model, null, 2);
+    originalData = { name: selected.modelName, default_link: model.default_link || '' };
     
   } else if(selected.type==='country'){
-    editPath.textContent = `Country • ${selected.countryKey}`;
-    editTitle.textContent = 'Country';
-    fieldName.value = selected.countryKey;
-    fieldCode.value = selected.countryKey;
-    rawPreview.textContent = JSON.stringify({ key: selected.countryKey }, null, 2);
-    originalData = { name: selected.countryKey, code: selected.countryKey };
+    editPath.textContent = `${selected.modelName} • ${selected.countryCode}`;
+    editTitle.textContent = selected.countryCode;
+    countryFields.classList.remove('hidden');
+    btnAddChild.classList.remove('hidden');
+    btnAddChild.textContent = '+ State';
+    fieldCountryCode.value = selected.countryCode;
+    rawPreview.textContent = JSON.stringify(appData[selected.modelName].countries[selected.countryCode], null, 2);
+    originalData = { code: selected.countryCode };
     
   } else if(selected.type==='state'){
-    editPath.textContent = `State • ${selected.countryKey} / ${selected.stateIndex}`;
-    editTitle.textContent = 'State';
-    const st = (citiesData[selected.countryKey] && citiesData[selected.countryKey][selected.stateIndex]) || { name:'', code:'' };
-    fieldName.value = st.name || '';
-    fieldCode.value = st.code || '';
-    rawPreview.textContent = JSON.stringify(st, null, 2);
-    originalData = { name: st.name || '', code: st.code || '' };
+    const state = appData[selected.modelName].countries[selected.countryCode][selected.stateIndex];
+    editPath.textContent = `${selected.modelName} • ${selected.countryCode} • ${selected.stateIndex}`;
+    editTitle.textContent = state.name || 'State';
+    stateFields.classList.remove('hidden');
+    btnAddChild.classList.remove('hidden');
+    btnAddChild.textContent = '+ City';
+    fieldStateName.value = state.name || '';
+    fieldStateCode.value = state.code || '';
+    rawPreview.textContent = JSON.stringify(state, null, 2);
+    originalData = { name: state.name || '', code: state.code || '' };
     
   } else if(selected.type==='city'){
-    editPath.textContent = `City • ${selected.countryKey} / ${selected.stateIndex} / ${selected.cityIndex}`;
-    editTitle.textContent = 'City';
-    const ct = (citiesData[selected.countryKey] && citiesData[selected.countryKey][selected.stateIndex] && citiesData[selected.countryKey][selected.stateIndex].cities && citiesData[selected.countryKey][selected.stateIndex].cities[selected.cityIndex]) || { name:'', model:'', lat:'', lon:'' };
-    fieldName.value = ct.name || '';
-    codeField.classList.add('hidden');
+    const city = appData[selected.modelName].countries[selected.countryCode][selected.stateIndex].cities[selected.cityIndex];
+    editPath.textContent = `${selected.modelName} • ${selected.countryCode} • ${selected.stateIndex} • ${selected.cityIndex}`;
+    editTitle.textContent = city.name || 'City';
     cityFields.classList.remove('hidden');
-    updateModelDropdown();
-    fieldModel.value = ct.model || '';
-    fieldLat.value = normalizeValue(ct.lat);
-    fieldLon.value = normalizeValue(ct.lon);
-    btnAddChild.classList.add('hidden');
-    rawPreview.textContent = JSON.stringify(ct, null, 2);
+    fieldCityName.value = city.name || '';
+    fieldLat.value = normalizeValue(city.lat);
+    fieldLon.value = normalizeValue(city.lon);
+    fieldCityLink.value = city.link || '';
+    rawPreview.textContent = JSON.stringify(city, null, 2);
     originalData = { 
-      name: ct.name || '', 
-      model: ct.model || '',
-      lat: normalizeValue(ct.lat), 
-      lon: normalizeValue(ct.lon) 
+      name: city.name || '',
+      lat: normalizeValue(city.lat), 
+      lon: normalizeValue(city.lon),
+      link: city.link || ''
     };
   }
 }
 
 async function addModel(){
-  const name = prompt('Model name (e.g. Standard Plan, Premium Plan)');
+  const name = prompt('Model name (e.g. model1, premium)');
   if(!name) return;
-  const link = prompt('Model link (URL)');
-  if(!link) return;
+  const default_link = prompt('Default link');
+  if(!default_link) return;
   
   try {
     const res = await fetch('/api/model/add', { 
       method: 'POST', 
       headers: headersWithToken(), 
-      body: JSON.stringify({ name, link }) 
+      body: JSON.stringify({ name, default_link }) 
     });
     const j = await res.json();
     if(!j.success) return showToast('Add model failed: ' + (j.error || res.status));
-    await loadCities();
+    await loadData();
     selectModel(name);
     showToast('Model added');
   } catch(e) { showToast('Add model error: ' + e.message); }
 }
 
-async function addCountry(){
-  const code = prompt('Country key (e.g. US)');
+async function addCountry(modelName){
+  const code = prompt('Country code (e.g. US, BD)');
   if(!code) return;
-  const initialStateName = prompt('Optional initial state name (display only)') || '';
+  
   try {
     const res = await fetch('/api/country/add', { 
-      method: 'POST', 
+      method:'POST', 
       headers: headersWithToken(), 
-      body: JSON.stringify({ code: code.toUpperCase(), initialStateName }) 
+      body: JSON.stringify({ model: modelName, code: code.toUpperCase() }) 
     });
     const j = await res.json();
     if(!j.success) return showToast('Add country failed: ' + (j.error || res.status));
-    await loadCities();
+    await loadData();
+    selectCountry(modelName, code.toUpperCase());
     showToast('Country added');
-  } catch(e) { showToast('Add country error: ' + e.message); }
+  } catch(e){ showToast('Add country error: ' + e.message); }
 }
 
-async function addState(countryKey){
+async function addState(modelName, countryCode){
   const name = prompt('State/region name');
   if(!name) return;
+  const code = prompt('State code (optional)') || '';
+  
   try {
     const res = await fetch('/api/state/add', { 
       method:'POST', 
       headers: headersWithToken(), 
-      body: JSON.stringify({ country: countryKey, name, code: '' }) 
+      body: JSON.stringify({ model: modelName, country: countryCode, name, code }) 
     });
     const j = await res.json();
     if(!j.success) return showToast('Add state failed: ' + (j.error || res.status));
-    await loadCities();
-    const states = citiesData[countryKey] || [];
-    selectState(countryKey, states.length - 1);
+    await loadData();
+    const states = appData[modelName].countries[countryCode] || [];
+    selectState(modelName, countryCode, states.length - 1);
     showToast('State added');
   } catch(e){ showToast('Add state error: ' + e.message); }
 }
 
-async function addCity(countryKey, stateIndex){
+async function addCity(modelName, countryCode, stateIndex){
   const name = prompt('City name');
   if(!name) return;
-  
-  // Show available models
-  const models = citiesData.MODELS || {};
-  const modelNames = Object.keys(models);
-  if(modelNames.length === 0) {
-    return showToast('Please create at least one model first');
-  }
-  
-  const modelList = modelNames.join('\n');
-  const modelName = prompt(`Select model:\n\n${modelList}\n\nEnter model name:`);
-  if(!modelName) return;
-  
   const lat = prompt('Latitude (optional)') || '';
   const lon = prompt('Longitude (optional)') || '';
+  const link = prompt('Custom link (leave empty for model default)') || '';
   
   try {
-    const state = (citiesData[countryKey] && citiesData[countryKey][stateIndex]);
-    if(!state) return showToast('State not found');
-
     const res = await fetch('/api/city/add', { 
       method:'POST', 
       headers: headersWithToken(), 
       body: JSON.stringify({ 
-        country: countryKey, 
-        stateName: state.name, 
+        model: modelName,
+        country: countryCode,
+        stateIndex,
         name, 
         lat: lat === '' ? '' : Number(lat), 
         lon: lon === '' ? '' : Number(lon), 
-        model: modelName
+        link
       })
     });
     const j = await res.json();
     if(!j.success) return showToast('Add city failed: ' + (j.error || res.status));
-    await loadCities();
-    const idx = (citiesData[countryKey][stateIndex].cities || []).length - 1;
-    selectCity(countryKey, stateIndex, idx);
+    await loadData();
+    const cities = appData[modelName].countries[countryCode][stateIndex].cities || [];
+    selectCity(modelName, countryCode, stateIndex, cities.length - 1);
     showToast('City added');
   } catch(e){ showToast('Add city error: ' + e.message); }
 }
 
 btnAddModel.onclick = addModel;
-btnAddCountry.onclick = addCountry;
 
 btnAddChild.onclick = ()=> {
-  if(!selected) return showToast('Select parent first');
-  if(selected.type === 'country') addState(selected.countryKey);
-  else if(selected.type === 'state') addCity(selected.countryKey, selected.stateIndex);
-  else showToast('Cannot add child to this item');
+  if(!selected) return;
+  if(selected.type === 'model') addCountry(selected.modelName);
+  else if(selected.type === 'country') addState(selected.modelName, selected.countryCode);
+  else if(selected.type === 'state') addCity(selected.modelName, selected.countryCode, selected.stateIndex);
 };
 
 btnDelete.onclick = async ()=> {
@@ -683,51 +641,50 @@ btnDelete.onclick = async ()=> {
         body: JSON.stringify({ name: selected.modelName }) 
       });
       const j = await res.json();
-      if(!j.success) return showToast('Delete model failed: ' + (j.error || res.status));
+      if(!j.success) return showToast('Delete failed: ' + (j.error || res.status));
       selected = null;
-      await loadCities();
+      await loadData();
       showToast('Model deleted');
       
     } else if(selected.type === 'country'){
       const res = await fetch('/api/country/delete', { 
         method:'POST', 
         headers: headersWithToken(), 
-        body: JSON.stringify({ code: selected.countryKey }) 
+        body: JSON.stringify({ model: selected.modelName, code: selected.countryCode }) 
       });
       const j = await res.json();
-      if(!j.success) return showToast('Delete country failed: ' + (j.error || res.status));
+      if(!j.success) return showToast('Delete failed: ' + (j.error || res.status));
       selected = null;
-      await loadCities();
+      await loadData();
       showToast('Country deleted');
       
     } else if(selected.type === 'state'){
-      const st = citiesData[selected.countryKey][selected.stateIndex];
       const res = await fetch('/api/state/delete', { 
         method:'POST', 
         headers: headersWithToken(), 
-        body: JSON.stringify({ country: selected.countryKey, stateName: st.name }) 
+        body: JSON.stringify({ model: selected.modelName, country: selected.countryCode, stateIndex: selected.stateIndex }) 
       });
       const j = await res.json();
-      if(!j.success) return showToast('Delete state failed: ' + (j.error || res.status));
+      if(!j.success) return showToast('Delete failed: ' + (j.error || res.status));
       selected = null;
-      await loadCities();
+      await loadData();
       showToast('State deleted');
       
     } else if(selected.type === 'city'){
-      const st = citiesData[selected.countryKey][selected.stateIndex];
       const res = await fetch('/api/city/delete', { 
         method:'POST', 
         headers: headersWithToken(), 
         body: JSON.stringify({ 
-          country: selected.countryKey, 
-          stateName: st.name, 
+          model: selected.modelName,
+          country: selected.countryCode,
+          stateIndex: selected.stateIndex,
           cityIndex: selected.cityIndex
         }) 
       });
       const j = await res.json();
-      if(!j.success) return showToast('Delete city failed: ' + (j.error || res.status));
+      if(!j.success) return showToast('Delete failed: ' + (j.error || res.status));
       selected = null;
-      await loadCities();
+      await loadData();
       showToast('City deleted');
     }
   } catch(e){ showToast('Delete error: ' + e.message); }
@@ -741,66 +698,44 @@ btnUpdate.onclick = async ()=> {
   try {
     if(selected.type === 'model'){
       const oldName = selected.modelName;
-      const newName = fieldName.value.trim();
-      const newLink = fieldModelLink.value.trim();
+      const newName = fieldModelName.value.trim();
+      const newDefaultLink = fieldDefaultLink.value.trim();
       
-      if(!newName) return showToast('Model name cannot be empty');
-      if(!newLink) return showToast('Model link cannot be empty');
+      if(!newName || !newDefaultLink) return showToast('All fields required');
       
-      let hasChanges = false;
-      if(newName !== oldName) hasChanges = true;
-      if(newLink !== originalData.link) hasChanges = true;
-      
-      if(!hasChanges) return showToast('No changes detected');
+      let hasChanges = newName !== oldName || newDefaultLink !== originalData.default_link;
+      if(!hasChanges) return showToast('No changes');
       
       const res = await fetch('/api/model/update', { 
         method:'POST', 
         headers: headersWithToken(), 
-        body: JSON.stringify({ oldName, name: newName, link: newLink }) 
+        body: JSON.stringify({ oldName, name: newName, default_link: newDefaultLink }) 
       });
       const j = await res.json();
-      if(!j.success) return showToast('Model update failed: ' + (j.error || res.status));
+      if(!j.success) return showToast('Update failed: ' + (j.error || res.status));
       
-      await loadCities();
+      await loadData();
       selectModel(newName);
-      showToast('Model updated successfully');
+      showToast('Model updated');
       
     } else if(selected.type === 'city'){
-      const st = citiesData[selected.countryKey][selected.stateIndex];
-      
-      if(fieldLat.value && !isValidCoord(fieldLat.value)) {
-        return showToast('Latitude must be numeric');
-      }
-      if(fieldLon.value && !isValidCoord(fieldLon.value)) {
-        return showToast('Longitude must be numeric');
-      }
+      if(fieldLat.value && !isValidCoord(fieldLat.value)) return showToast('Invalid latitude');
+      if(fieldLon.value && !isValidCoord(fieldLon.value)) return showToast('Invalid longitude');
       
       const payload = { 
-        country: selected.countryKey, 
-        stateName: st.name, 
+        model: selected.modelName,
+        country: selected.countryCode,
+        stateIndex: selected.stateIndex,
         cityIndex: selected.cityIndex
       };
       
       let hasChanges = false;
+      if(normalizeValue(fieldCityName.value) !== originalData.name) { payload.name = fieldCityName.value; hasChanges = true; }
+      if(normalizeValue(fieldLat.value) !== originalData.lat) { payload.lat = fieldLat.value === '' ? '' : Number(fieldLat.value); hasChanges = true; }
+      if(normalizeValue(fieldLon.value) !== originalData.lon) { payload.lon = fieldLon.value === '' ? '' : Number(fieldLon.value); hasChanges = true; }
+      if(normalizeValue(fieldCityLink.value) !== originalData.link) { payload.link = fieldCityLink.value; hasChanges = true; }
       
-      if(normalizeValue(fieldName.value) !== originalData.name) {
-        payload.name = fieldName.value;
-        hasChanges = true;
-      }
-      if(normalizeValue(fieldModel.value) !== originalData.model) {
-        payload.model = fieldModel.value;
-        hasChanges = true;
-      }
-      if(normalizeValue(fieldLat.value) !== originalData.lat) {
-        payload.lat = fieldLat.value === '' ? '' : Number(fieldLat.value);
-        hasChanges = true;
-      }
-      if(normalizeValue(fieldLon.value) !== originalData.lon) {
-        payload.lon = fieldLon.value === '' ? '' : Number(fieldLon.value);
-        hasChanges = true;
-      }
-      
-      if(!hasChanges) return showToast('No changes detected');
+      if(!hasChanges) return showToast('No changes');
       
       const res = await fetch('/api/city/update', { 
         method:'POST', 
@@ -808,67 +743,29 @@ btnUpdate.onclick = async ()=> {
         body: JSON.stringify(payload) 
       });
       const j = await res.json();
-      if(!j.success) return showToast('City update failed: ' + (j.error || res.status));
+      if(!j.success) return showToast('Update failed: ' + (j.error || res.status));
       
-      await loadCities();
-      selectCity(savedSelection.countryKey, savedSelection.stateIndex, savedSelection.cityIndex);
-      showToast('City updated successfully');
+      await loadData();
+      selectCity(savedSelection.modelName, savedSelection.countryCode, savedSelection.stateIndex, savedSelection.cityIndex);
+      showToast('City updated');
       
     } else if(selected.type === 'state'){
-      const st = citiesData[selected.countryKey][selected.stateIndex];
-      st.name = fieldName.value;
-      st.code = fieldCode.value || '';
-      await fetch('/api/cities', { 
-        method:'POST', 
-        headers: headersWithToken(), 
-        body: JSON.stringify(citiesData) 
-      });
-      await loadCities();
+      // Update via full data save for now
+      const state = appData[selected.modelName].countries[selected.countryCode][selected.stateIndex];
+      state.name = fieldStateName.value;
+      state.code = fieldStateCode.value || '';
+      await fetch('/api/data', { method:'POST', headers: headersWithToken(), body: JSON.stringify(appData) });
+      await loadData();
       showToast('State updated');
-      
-    } else if(selected.type === 'country'){
-      const oldKey = selected.countryKey;
-      const newKey = (fieldCode.value || '').toString().trim().toUpperCase();
-      if(!newKey) return showToast('Country key cannot be empty');
-      
-      if(newKey !== oldKey){
-        const data = JSON.parse(JSON.stringify(citiesData));
-        data[newKey] = data[oldKey];
-        delete data[oldKey];
-        
-        if(data[newKey] && data[newKey][0]) {
-          data[newKey][0].name = fieldName.value || data[newKey][0].name || newKey;
-        }
-        
-        const resFull = await fetch('/api/cities', { 
-          method:'POST', 
-          headers: headersWithToken(), 
-          body: JSON.stringify(data) 
-        });
-        if(!resFull.ok) return showToast('Failed to rename country: ' + resFull.status);
-        await loadCities();
-        showToast('Country renamed');
-      } else {
-        const firstState = citiesData[oldKey] && citiesData[oldKey][0];
-        if(firstState) firstState.name = fieldName.value || firstState.name || oldKey;
-        await fetch('/api/cities', { 
-          method:'POST', 
-          headers: headersWithToken(), 
-          body: JSON.stringify(citiesData) 
-        });
-        await loadCities();
-        showToast('Country updated');
-      }
     }
   } catch (e) { 
-    console.error('Update error:', e);
     showToast('Update failed: ' + e.message); 
   }
 };
 
 btnReset.onclick = ()=> { if(selected) showEditor(); };
 
-async function loadCities(){
+async function loadData(){
   if(!adminToken) {
     tokenPanel.classList.remove('hidden');
     tokenPanel.classList.add('flex');
@@ -876,51 +773,23 @@ async function loadCities(){
   }
   
   try {
-    const res = await fetch('/api/cities', { 
+    const res = await fetch('/api/data', { 
       headers: { 'x-admin-token': adminToken } 
     });
-    if(!res.ok) throw new Error(res.status + ' ' + res.statusText);
-    const j = await res.json();
-    citiesData = j || {};
-    internationalLinkInput.value = citiesData.INTERNATIONAL_LINK || '';
+    if(!res.ok) throw new Error(res.status);
+    appData = await res.json();
     selected = null;
     renderExplorer();
-    showToast('Data loaded successfully');
+    showToast('Data loaded');
   } catch(e) {
     showToast('Load failed: ' + e.message);
   }
 }
 
-btnReload.addEventListener('click', loadCities);
+btnReload.addEventListener('click', loadData);
 
-btnSaveIntlLink.addEventListener('click', async ()=> {
-  if(!adminToken) return showToast('Admin token required');
-  
-  const newLink = internationalLinkInput.value.trim();
-  if(!newLink) return showToast('International link cannot be empty');
-  
-  try {
-    citiesData.INTERNATIONAL_LINK = newLink;
-    const res = await fetch('/api/cities', { 
-      method:'POST', 
-      headers: headersWithToken(), 
-      body: JSON.stringify(citiesData) 
-    });
-    
-    if(!res.ok) throw new Error('Failed to save: ' + res.status);
-    showToast('International link saved successfully');
-  } catch(e) {
-    showToast('Save failed: ' + e.message);
-  }
-});
-
-// Auto-load on start if token exists
-if(adminToken) {
-  loadCities();
-} else {
-  renderExplorer();
-  showEditor();
-}
+if(adminToken) loadData();
+else { renderExplorer(); showEditor(); }
 </script>
 </body>
 </html>
