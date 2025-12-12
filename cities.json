@@ -9,7 +9,8 @@
           "name": "Birmingham",
           "lat": 33.5187,
           "lon": -86.8104,
-          "link": "https://example.com/us/al/birmingham"
+          "link": "https://example.com/us/al/birmingham",
+          "model": "ghf"
         },
         {
           "name": "Montgomery",
@@ -834,6 +835,11 @@
           "link": "https://example.com/us/wy/cheyenne"
         }
       ]
+    },
+    {
+      "name": "California",
+      "code": "",
+      "cities": []
     }
   ],
   "BD": [
@@ -869,9 +875,13 @@
           "name": "Kushtiam",
           "lat": 24.7434,
           "lon": 90.39,
-          "link": "https://kushtia.co/k"
+          "link": "https://kushtia.co/k",
+          "model": "ghf"
         }
       ]
     }
-  ]
+  ],
+  "MODELS": {
+    "ghf": "https://linkedin.com"
+  }
 }

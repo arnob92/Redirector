@@ -1,4 +1,4 @@
-// server.js — Simplified version without state code dependency
+// server.js – With Models support and collapsible UI
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -34,7 +34,10 @@ function readCities() {
     return JSON.parse(fs.readFileSync(CITIES_FILE, "utf8"));
   } catch (err) {
     console.error("Could not read cities.json:", err);
-    return { INTERNATIONAL_LINK: "https://example.com/international" };
+    return { 
+      INTERNATIONAL_LINK: "https://example.com/international",
+      MODELS: {}
+    };
   }
 }
 
@@ -110,6 +113,7 @@ app.get("/redirect", async (req, res) => {
   try {
     const cfg = readCities();
     const intl = cfg.INTERNATIONAL_LINK || "https://example.com/international";
+    const models = cfg.MODELS || {};
 
     const ip = req.query.testip || getClientIp(req);
     const geo = await getIpGeo(ip);
@@ -144,7 +148,7 @@ app.get("/redirect", async (req, res) => {
       ""
     ).toString().trim().toUpperCase();
 
-    // Region match improvement - uses both name and code
+    // Region match improvement
     const regionMatcher = (s) => {
       const name = (s.name || "").toUpperCase();
       const code = (s.code || "").toUpperCase();
@@ -178,13 +182,22 @@ app.get("/redirect", async (req, res) => {
       }
     }
 
-    if (!nearest || !nearest.link) {
+    if (!nearest) {
       console.warn("No valid city found → international fallback");
       return res.redirect(intl);
     }
 
-    console.log("Redirect →", nearest.name, nearest.link, `(${bestDist.toFixed(2)} km)`);
-    return res.redirect(nearest.link);
+    // Resolve model to link
+    let finalLink = intl;
+    if (nearest.model && models[nearest.model]) {
+      finalLink = models[nearest.model];
+    } else if (nearest.link) {
+      // Fallback to direct link if exists (backwards compatibility)
+      finalLink = nearest.link;
+    }
+
+    console.log("Redirect →", nearest.name, finalLink, `(${bestDist.toFixed(2)} km, model: ${nearest.model || 'none'})`);
+    return res.redirect(finalLink);
 
   } catch (err) {
     console.error("Redirect error:", err);
@@ -197,7 +210,7 @@ app.get("/redirect", async (req, res) => {
 app.get("/", (req, res) => res.redirect("/redirect"));
 
 // -------------------------------
-// ADMIN ENDPOINTS (with CRUD) - SIMPLIFIED
+// ADMIN ENDPOINTS
 // -------------------------------
 if (!DISABLE_ADMIN) {
   const checkAdminToken = (req, res, next) => {
@@ -211,7 +224,7 @@ if (!DISABLE_ADMIN) {
     res.type("json").send(fs.readFileSync(CITIES_FILE, "utf8"));
   });
 
-  // Overwrite entire JSON (keeps compatibility)
+  // Overwrite entire JSON
   app.post("/api/cities", checkAdminToken, (req, res) => {
     try {
       const json = JSON.parse(req.body);
@@ -220,6 +233,78 @@ if (!DISABLE_ADMIN) {
     } catch (err) {
       console.error("POST /api/cities invalid json", err);
       res.status(400).send("invalid json");
+    }
+  });
+
+  // -------------------------------
+  // Model CRUD
+  // -------------------------------
+  app.post("/api/model/add", checkAdminToken, (req, res) => {
+    try {
+      const { name, link } = JSON.parse(req.body || '{}');
+      if (!name || !link) return res.status(400).json({ success: false, error: "missing params" });
+
+      const data = readCities();
+      if (!data.MODELS) data.MODELS = {};
+      data.MODELS[name] = link;
+      writeCities(data);
+      res.json({ success: true });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post("/api/model/update", checkAdminToken, (req, res) => {
+    try {
+      const { oldName, name, link } = JSON.parse(req.body || '{}');
+      if (!oldName) return res.status(400).json({ success: false, error: "missing oldName" });
+
+      const data = readCities();
+      if (!data.MODELS || !data.MODELS[oldName]) return res.status(400).json({ success: false, error: "model not found" });
+      
+      // If name changed, we need to update all cities using this model
+      if (name && name !== oldName) {
+        // Update all cities that reference this model
+        Object.keys(data).forEach(countryKey => {
+          if (countryKey === 'INTERNATIONAL_LINK' || countryKey === 'MODELS') return;
+          if (!Array.isArray(data[countryKey])) return;
+          
+          data[countryKey].forEach(state => {
+            if (!Array.isArray(state.cities)) return;
+            state.cities.forEach(city => {
+              if (city.model === oldName) {
+                city.model = name;
+              }
+            });
+          });
+        });
+        
+        // Update the model itself
+        data.MODELS[name] = link || data.MODELS[oldName];
+        delete data.MODELS[oldName];
+      } else if (link !== undefined) {
+        data.MODELS[oldName] = link;
+      }
+      
+      writeCities(data);
+      res.json({ success: true });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.post("/api/model/delete", checkAdminToken, (req, res) => {
+    try {
+      const { name } = JSON.parse(req.body || '{}');
+      if (!name) return res.status(400).json({ success: false, error: "missing name" });
+
+      const data = readCities();
+      if (!data.MODELS) data.MODELS = {};
+      delete data.MODELS[name];
+      writeCities(data);
+      res.json({ success: true });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message });
     }
   });
 
@@ -259,7 +344,7 @@ if (!DISABLE_ADMIN) {
   });
 
   // -------------------------------
-  // State CRUD - Simplified (no code required)
+  // State CRUD
   // -------------------------------
   app.post("/api/state/add", checkAdminToken, (req, res) => {
     try {
@@ -293,95 +378,88 @@ if (!DISABLE_ADMIN) {
   });
 
   // -------------------------------
-  // City CRUD - Simplified (use stateName instead of stateCode)
+  // City CRUD - Updated for Models
   // -------------------------------
-  // -------------------------------
-// City CRUD - FIXED VERSION
-// -------------------------------
-app.post("/api/city/add", checkAdminToken, (req, res) => {
-  try {
-    const { country, stateName, name, lat, lon, link } = JSON.parse(req.body || '{}');
-    if (!country || !stateName || !name) {
-      return res.status(400).json({ success: false, error: "missing params" });
+  app.post("/api/city/add", checkAdminToken, (req, res) => {
+    try {
+      const { country, stateName, name, lat, lon, model } = JSON.parse(req.body || '{}');
+      if (!country || !stateName || !name) {
+        return res.status(400).json({ success: false, error: "missing params" });
+      }
+
+      const data = readCities();
+      const state = data[country]?.find(s => s.name === stateName);
+      if (!state) return res.status(400).json({ success: false, error: "state not found" });
+
+      state.cities = state.cities || [];
+      state.cities.push({ 
+        name, 
+        lat: lat === undefined || lat === null ? '' : lat, 
+        lon: lon === undefined || lon === null ? '' : lon, 
+        model: model || '' 
+      });
+      writeCities(data);
+      res.json({ success: true });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message });
     }
+  });
 
-    const data = readCities();
-    const state = data[country]?.find(s => s.name === stateName);
-    if (!state) return res.status(400).json({ success: false, error: "state not found" });
+  app.post("/api/city/update", checkAdminToken, (req, res) => {
+    try {
+      const { country, stateName, cityIndex, name, lat, lon, model } = JSON.parse(req.body || '{}');
+      
+      if (!country || !stateName || cityIndex === undefined) {
+        return res.status(400).json({ success: false, error: "missing params" });
+      }
 
-    state.cities = state.cities || [];
-    state.cities.push({ 
-      name, 
-      lat: lat === undefined || lat === null ? '' : lat, 
-      lon: lon === undefined || lon === null ? '' : lon, 
-      link: link || '' 
-    });
-    writeCities(data);
-    res.json({ success: true });
-  } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
-});
+      const data = readCities();
+      const state = data[country]?.find(s => s.name === stateName);
+      if (!state) return res.status(400).json({ success: false, error: "state not found" });
 
-app.post("/api/city/update", checkAdminToken, (req, res) => {
-  try {
-    const { country, stateName, cityIndex, name, lat, lon, link } = JSON.parse(req.body || '{}');
-    
-    // Only require country, stateName, and cityIndex
-    if (!country || !stateName || cityIndex === undefined) {
-      return res.status(400).json({ success: false, error: "missing params" });
+      if (!state.cities || !state.cities[cityIndex]) {
+        return res.status(400).json({ success: false, error: "city not found" });
+      }
+
+      const city = state.cities[cityIndex];
+      
+      if (name !== undefined) city.name = name;
+      if (lat !== undefined) city.lat = lat;
+      if (lon !== undefined) city.lon = lon;
+      if (model !== undefined) city.model = model;
+
+      writeCities(data);
+      res.json({ success: true });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message });
     }
+  });
 
-    const data = readCities();
-    const state = data[country]?.find(s => s.name === stateName);
-    if (!state) return res.status(400).json({ success: false, error: "state not found" });
+  app.post("/api/city/delete", checkAdminToken, (req, res) => {
+    try {
+      const { country, stateName, cityIndex } = JSON.parse(req.body || '{}');
+      
+      if (!country || !stateName || cityIndex === undefined) {
+        return res.status(400).json({ success: false, error: "missing params" });
+      }
 
-    if (!state.cities || !state.cities[cityIndex]) {
-      return res.status(400).json({ success: false, error: "city not found" });
+      const data = readCities();
+      const state = data[country]?.find(s => s.name === stateName);
+      if (!state) return res.status(400).json({ success: false, error: "state not found" });
+
+      if (!state.cities || !state.cities[cityIndex]) {
+        return res.status(400).json({ success: false, error: "city not found" });
+      }
+
+      state.cities.splice(cityIndex, 1);
+      writeCities(data);
+      res.json({ success: true });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message });
     }
+  });
 
-    const city = state.cities[cityIndex];
-    
-    // Only update if value is provided (not undefined)
-    if (name !== undefined) city.name = name;
-    if (lat !== undefined) city.lat = lat;
-    if (lon !== undefined) city.lon = lon;
-    if (link !== undefined) city.link = link;
-
-    writeCities(data);
-    res.json({ success: true });
-  } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
-});
-
-app.post("/api/city/delete", checkAdminToken, (req, res) => {
-  try {
-    const { country, stateName, cityIndex } = JSON.parse(req.body || '{}');
-    
-    // FIXED: Use cityIndex instead of name
-    if (!country || !stateName || cityIndex === undefined) {
-      return res.status(400).json({ success: false, error: "missing params" });
-    }
-
-    const data = readCities();
-    const state = data[country]?.find(s => s.name === stateName);
-    if (!state) return res.status(400).json({ success: false, error: "state not found" });
-
-    if (!state.cities || !state.cities[cityIndex]) {
-      return res.status(400).json({ success: false, error: "city not found" });
-    }
-
-    // Remove the city at the specified index
-    state.cities.splice(cityIndex, 1);
-    writeCities(data);
-    res.json({ success: true });
-  } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
-});
-
-  // debug geo (kept)
+  // debug geo
   app.get("/api/debug-geo", checkAdminToken, async (req, res) => {
     const ip = req.query.ip || getClientIp(req);
     const g = ip ? await getIpGeo(ip) : null;
@@ -393,10 +471,7 @@ app.post("/api/city/delete", checkAdminToken, (req, res) => {
 // ADMIN UI SERVE
 // -------------------------------
 if (!DISABLE_ADMIN) {
-  // Serve static files from /public
   app.use("/admin", express.static(path.join(__dirname, "public")));
-
-  // Serve admin.html at /admin
   app.get("/admin", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "admin.html"));
   });
