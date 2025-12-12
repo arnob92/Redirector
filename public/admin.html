@@ -20,7 +20,7 @@
   <div class="max-w-7xl mx-auto p-6">
     <header class="flex items-center gap-4 mb-6">
       <div>
-        <h1 class="text-2xl font-semibold">City Management – Admin</h1>
+        <h1 class="text-2xl font-semibold">City Management – Admin (Dark)</h1>
         <p class="muted text-sm">Country → State → City. Edit lat/lon/link and manage structure.</p>
       </div>
 
@@ -235,54 +235,51 @@ function renderExplorer(){
 
   keys.forEach(countryKey => {
     const countryBox = document.createElement('div');
-    countryBox.className = 'p-3 rounded hover:bg-white/2 flex items-center justify-between';
+    countryBox.className = 'p-3 rounded hover:bg-white/2 flex items-center justify-between cursor-pointer';
     if(selected && selected.type==='country' && selected.countryKey===countryKey) countryBox.classList.add('ring-2','ring-blue-600','bg-white/2');
+    
+    countryBox.onclick = ()=> selectCountry(countryKey);
 
     const left = document.createElement('div');
     left.innerHTML = `<div class="font-medium">${countryKey}</div><div class="text-xs muted">${(citiesData[countryKey]||[]).length} states</div>`;
 
     const right = document.createElement('div');
-    const editBtn = document.createElement('button'); editBtn.className='text-sm px-2 py-1 rounded bg-white/5 mr-2'; editBtn.textContent='Edit';
-    editBtn.onclick = ()=> selectCountry(countryKey);
     const addStateBtn = document.createElement('button'); addStateBtn.className='text-sm px-2 py-1 rounded bg-emerald-600'; addStateBtn.textContent='+ State';
-    addStateBtn.onclick = ()=> { selectCountry(countryKey); addState(countryKey); };
+    addStateBtn.onclick = (e)=> { e.stopPropagation(); selectCountry(countryKey); addState(countryKey); };
 
-    right.appendChild(addStateBtn); right.appendChild(editBtn);
+    right.appendChild(addStateBtn);
     countryBox.appendChild(left); countryBox.appendChild(right);
     listBox.appendChild(countryBox);
 
     const states = citiesData[countryKey] || [];
     states.forEach((st, si) => {
       const stDiv = document.createElement('div');
-      stDiv.className = 'ml-4 p-2 rounded hover:bg-white/3 flex items-center justify-between';
+      stDiv.className = 'ml-4 p-2 rounded hover:bg-white/3 flex items-center justify-between cursor-pointer';
       if(selected && selected.type==='state' && selected.countryKey===countryKey && selected.stateIndex===si) stDiv.classList.add('ring-2','ring-blue-500','bg-white/3');
+      
+      stDiv.onclick = ()=> selectState(countryKey, si);
 
       const stLeft = document.createElement('div');
       stLeft.innerHTML = `<div class="font-medium">${escapeHtml(st.name || '(unnamed)')}</div><div class="text-xs muted">${Array.isArray(st.cities)?st.cities.length:0} cities</div>`;
 
       const stRight = document.createElement('div');
-      const addCityBtn = document.createElement('button'); addCityBtn.className='text-sm px-2 py-1 rounded bg-emerald-600 mr-2'; addCityBtn.textContent='+ City';
-      addCityBtn.onclick = ()=> { selectState(countryKey, si); addCity(countryKey, si); };
-      const stEditBtn = document.createElement('button'); stEditBtn.className='text-sm px-2 py-1 rounded bg-white/5'; stEditBtn.textContent='Edit';
-      stEditBtn.onclick = ()=> { selectState(countryKey, si); };
+      const addCityBtn = document.createElement('button'); addCityBtn.className='text-sm px-2 py-1 rounded bg-emerald-600'; addCityBtn.textContent='+ City';
+      addCityBtn.onclick = (e)=> { e.stopPropagation(); selectState(countryKey, si); addCity(countryKey, si); };
 
-      stRight.appendChild(addCityBtn); stRight.appendChild(stEditBtn);
+      stRight.appendChild(addCityBtn);
       stDiv.appendChild(stLeft); stDiv.appendChild(stRight);
       listBox.appendChild(stDiv);
 
       if(Array.isArray(st.cities)) st.cities.forEach((ct, ci) => {
         const ctDiv = document.createElement('div');
-        ctDiv.className = 'ml-8 p-2 rounded hover:bg-white/4 flex items-center justify-between';
+        ctDiv.className = 'ml-8 p-2 rounded hover:bg-white/4 cursor-pointer';
         if(selected && selected.type==='city' && selected.countryKey===countryKey && selected.stateIndex===si && selected.cityIndex===ci) ctDiv.classList.add('ring-2','ring-indigo-500','bg-white/4');
 
         const ctLeft = document.createElement('div');
         ctLeft.innerHTML = `<div class="font-medium">${escapeHtml(ct.name||'(unnamed)')}</div><div class="text-xs muted">link: ${escapeHtml(ct.link||'-')} • ${escapeHtml(String(ct.lat||'-'))}, ${escapeHtml(String(ct.lon||'-'))}</div>`;
 
-        const ctRight = document.createElement('div');
-        const ctEditBtn = document.createElement('button'); ctEditBtn.className='text-sm px-2 py-1 rounded bg-white/5'; ctEditBtn.textContent='Edit';
-        ctEditBtn.onclick = ()=> selectCity(countryKey, si, ci);
-        ctRight.appendChild(ctEditBtn);
-        ctDiv.appendChild(ctLeft); ctDiv.appendChild(ctRight);
+        ctDiv.onclick = ()=> selectCity(countryKey, si, ci);
+        ctDiv.appendChild(ctLeft);
         listBox.appendChild(ctDiv);
       });
     });
@@ -358,7 +355,7 @@ function showEditor(){
 async function addCountry(){
   const code = prompt('Country key (e.g. US)');
   if(!code) return;
-  const initialStateName = prompt('Optional initial state name ') || '';
+  const initialStateName = prompt('Optional initial state name (display only)') || '';
   try {
     const res = await fetch('/api/country/add', { method: 'POST', headers: headersWithToken(), body: JSON.stringify({ code: code.toUpperCase(), initialStateName }) });
     const j = await res.json();
@@ -568,7 +565,7 @@ btnUpdate.onclick = async ()=> {
 btnReset.onclick = ()=> { if(selected) showEditor(); };
 
 async function loadCities(){
-  if(!adminToken) return showToast('Paste admin token');
+  if(!adminToken) return showToast('Paste admin token (click tiny padlock at top-right)');
   try {
     const res = await fetch('/api/cities', { headers: { 'x-admin-token': adminToken } });
     if(!res.ok) throw new Error(res.status + ' ' + res.statusText);
