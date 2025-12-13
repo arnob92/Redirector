@@ -1,145 +1,1809 @@
 {
-  "model1": {
-    "default_link": "https://example.com/model1-default",
-    "countries": {
-      "US": [
-        {
-          "code": "AL",
-          "name": "Alabama",
-          "cities": [
-            {
-              "name": "Birmingham",
-              "lat": 33.5187,
-              "lon": -86.8104,
-              "link": ""
-            },
-            {
-              "name": "Montgomery",
-              "lat": 32.3793,
-              "lon": -86.3077,
-              "link": "https://example.com/montgomery-special"
-            }
-          ]
-        },
-        {
-          "code": "CA",
-          "name": "California",
-          "cities": [
-            {
-              "name": "Los Angeles",
-              "lat": 34.0522,
-              "lon": -118.2437,
-              "link": "https://example.com/la-custom"
-            },
-            {
-              "name": "San Francisco",
-              "lat": 37.7749,
-              "lon": -122.4194,
-              "link": ""
-            }
-          ]
-        },
-        {
-          "code": "TX",
-          "name": "Texas",
-          "cities": [
-            {
-              "name": "Houston",
-              "lat": 29.7604,
-              "lon": -95.3698,
-              "link": ""
-            },
-            {
-              "name": "Austin",
-              "lat": 30.2672,
-              "lon": -97.7431,
-              "link": "https://example.com/austin-tech"
-            }
-          ]
+    "model1": {
+        "default_link": "https://example.com",
+        "countries": {
+            "US": [
+                {
+                    "name": "Alabama",
+                    "code": "AL",
+                    "cities": [
+                        {
+                            "name": "Birmingham",
+                            "lat": 33.5186,
+                            "lon": -86.8104,
+                            "link": "https://example.com/birmingham"
+                        },
+                        {
+                            "name": "Montgomery",
+                            "lat": 32.3792,
+                            "lon": -86.3077,
+                            "link": "https://example.com/montgomery"
+                        },
+                        {
+                            "name": "Mobile",
+                            "lat": 30.6954,
+                            "lon": -88.0399,
+                            "link": "https://example.com/mobile"
+                        },
+                        {
+                            "name": "Huntsville",
+                            "lat": 34.7304,
+                            "lon": -86.5861,
+                            "link": "https://example.com/huntsville"
+                        },
+                        {
+                            "name": "Tuscaloosa",
+                            "lat": 33.2098,
+                            "lon": -87.5692,
+                            "link": "https://example.com/tuscaloosa"
+                        }
+                    ]
+                },
+                {
+                    "name": "Alaska",
+                    "code": "AK",
+                    "cities": [
+                        {
+                            "name": "Anchorage",
+                            "lat": 61.2181,
+                            "lon": -149.9003,
+                            "link": "https://example.com/anchorage"
+                        },
+                        {
+                            "name": "Fairbanks",
+                            "lat": 64.8378,
+                            "lon": -147.7164,
+                            "link": "https://example.com/fairbanks"
+                        },
+                        {
+                            "name": "Juneau",
+                            "lat": 58.3019,
+                            "lon": -134.4197,
+                            "link": "https://example.com/juneau"
+                        },
+                        {
+                            "name": "Sitka",
+                            "lat": 57.0531,
+                            "lon": -135.33,
+                            "link": "https://example.com/sitka"
+                        },
+                        {
+                            "name": "Ketchikan",
+                            "lat": 55.3422,
+                            "lon": -131.6461,
+                            "link": "https://example.com/ketchikan"
+                        }
+                    ]
+                },
+                {
+                    "name": "Arizona",
+                    "code": "AZ",
+                    "cities": [
+                        {
+                            "name": "Phoenix",
+                            "lat": 33.4484,
+                            "lon": -112.074,
+                            "link": "https://example.com/phoenix"
+                        },
+                        {
+                            "name": "Tucson",
+                            "lat": 32.2226,
+                            "lon": -110.9747,
+                            "link": "https://example.com/tucson"
+                        },
+                        {
+                            "name": "Mesa",
+                            "lat": 33.4152,
+                            "lon": -111.8315,
+                            "link": "https://example.com/mesa"
+                        },
+                        {
+                            "name": "Chandler",
+                            "lat": 33.3062,
+                            "lon": -111.8413,
+                            "link": "https://example.com/chandler"
+                        },
+                        {
+                            "name": "Scottsdale",
+                            "lat": 33.4942,
+                            "lon": -111.9261,
+                            "link": "https://example.com/scottsdale"
+                        }
+                    ]
+                },
+                {
+                    "name": "Arkansas",
+                    "code": "AR",
+                    "cities": [
+                        {
+                            "name": "Little Rock",
+                            "lat": 34.7465,
+                            "lon": -92.2896,
+                            "link": "https://example.com/littlerock"
+                        },
+                        {
+                            "name": "Fort Smith",
+                            "lat": 35.3859,
+                            "lon": -94.3985,
+                            "link": "https://example.com/fortsmith"
+                        },
+                        {
+                            "name": "Fayetteville",
+                            "lat": 36.0822,
+                            "lon": -94.1719,
+                            "link": "https://example.com/fayetteville"
+                        },
+                        {
+                            "name": "Springdale",
+                            "lat": 36.1867,
+                            "lon": -94.1288,
+                            "link": "https://example.com/springdale"
+                        },
+                        {
+                            "name": "Jonesboro",
+                            "lat": 35.8423,
+                            "lon": -90.7043,
+                            "link": "https://example.com/jonesboro"
+                        }
+                    ]
+                },
+                {
+                    "name": "California",
+                    "code": "CA",
+                    "cities": [
+                        {
+                            "name": "Los Angeles",
+                            "lat": 34.0549,
+                            "lon": -118.2426,
+                            "link": "https://example.com/losangeles"
+                        },
+                        {
+                            "name": "San Diego",
+                            "lat": 32.7157,
+                            "lon": -117.1611,
+                            "link": "https://example.com/sandiego"
+                        },
+                        {
+                            "name": "San Jose",
+                            "lat": 37.3382,
+                            "lon": -121.8863,
+                            "link": "https://example.com/sanjose"
+                        },
+                        {
+                            "name": "San Francisco",
+                            "lat": 37.7749,
+                            "lon": -122.4194,
+                            "link": "https://example.com/sanfrancisco"
+                        },
+                        {
+                            "name": "Fresno",
+                            "lat": 36.7378,
+                            "lon": -119.7871,
+                            "link": "https://example.com/fresno"
+                        }
+                    ]
+                },
+                {
+                    "name": "Colorado",
+                    "code": "CO",
+                    "cities": [
+                        {
+                            "name": "Denver",
+                            "lat": 39.7392,
+                            "lon": -104.9903,
+                            "link": "https://example.com/denver"
+                        },
+                        {
+                            "name": "Colorado Springs",
+                            "lat": 38.8339,
+                            "lon": -104.8214,
+                            "link": "https://example.com/coloradosprings"
+                        },
+                        {
+                            "name": "Aurora",
+                            "lat": 39.7294,
+                            "lon": -104.8319,
+                            "link": "https://example.com/aurora"
+                        },
+                        {
+                            "name": "Fort Collins",
+                            "lat": 40.5853,
+                            "lon": -105.0844,
+                            "link": "https://example.com/fortcollins"
+                        },
+                        {
+                            "name": "Lakewood",
+                            "lat": 39.7047,
+                            "lon": -105.0814,
+                            "link": "https://example.com/lakewood"
+                        }
+                    ]
+                },
+                {
+                    "name": "Connecticut",
+                    "code": "CT",
+                    "cities": [
+                        {
+                            "name": "Bridgeport",
+                            "lat": 41.1865,
+                            "lon": -73.1952,
+                            "link": "https://example.com/bridgeport"
+                        },
+                        {
+                            "name": "New Haven",
+                            "lat": 41.3083,
+                            "lon": -72.9279,
+                            "link": "https://example.com/newhaven"
+                        },
+                        {
+                            "name": "Stamford",
+                            "lat": 41.0534,
+                            "lon": -73.5387,
+                            "link": "https://example.com/stamford"
+                        },
+                        {
+                            "name": "Hartford",
+                            "lat": 41.7658,
+                            "lon": -72.6734,
+                            "link": "https://example.com/hartford"
+                        },
+                        {
+                            "name": "Waterbury",
+                            "lat": 41.5582,
+                            "lon": -73.0515,
+                            "link": "https://example.com/waterbury"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delaware",
+                    "code": "DE",
+                    "cities": [
+                        {
+                            "name": "Wilmington",
+                            "lat": 39.7391,
+                            "lon": -75.5398,
+                            "link": "https://example.com/wilmington"
+                        },
+                        {
+                            "name": "Dover",
+                            "lat": 39.1582,
+                            "lon": -75.5244,
+                            "link": "https://example.com/dover"
+                        },
+                        {
+                            "name": "Newark",
+                            "lat": 39.6837,
+                            "lon": -75.7497,
+                            "link": "https://example.com/newark"
+                        },
+                        {
+                            "name": "Middletown",
+                            "lat": 39.4496,
+                            "lon": -75.7163,
+                            "link": "https://example.com/middletown"
+                        },
+                        {
+                            "name": "Smyrna",
+                            "lat": 39.2998,
+                            "lon": -75.6046,
+                            "link": "https://example.com/smyrna"
+                        }
+                    ]
+                },
+                {
+                    "name": "Florida",
+                    "code": "FL",
+                    "cities": [
+                        {
+                            "name": "Jacksonville",
+                            "lat": 30.3322,
+                            "lon": -81.6557,
+                            "link": "https://example.com/jacksonville"
+                        },
+                        {
+                            "name": "Miami",
+                            "lat": 25.7617,
+                            "lon": -80.1918,
+                            "link": "https://example.com/miami"
+                        },
+                        {
+                            "name": "Tampa",
+                            "lat": 27.9506,
+                            "lon": -82.4572,
+                            "link": "https://example.com/tampa"
+                        },
+                        {
+                            "name": "Orlando",
+                            "lat": 28.5383,
+                            "lon": -81.3792,
+                            "link": "https://example.com/orlando"
+                        },
+                        {
+                            "name": "St. Petersburg",
+                            "lat": 27.7676,
+                            "lon": -82.6403,
+                            "link": "https://example.com/stpetersburg"
+                        }
+                    ]
+                },
+                {
+                    "name": "Georgia",
+                    "code": "GA",
+                    "cities": [
+                        {
+                            "name": "Atlanta",
+                            "lat": 33.749,
+                            "lon": -84.388,
+                            "link": "https://example.com/atlanta"
+                        },
+                        {
+                            "name": "Augusta",
+                            "lat": 33.4735,
+                            "lon": -82.0105,
+                            "link": "https://example.com/augusta"
+                        },
+                        {
+                            "name": "Columbus",
+                            "lat": 32.4609,
+                            "lon": -84.9877,
+                            "link": "https://example.com/columbus"
+                        },
+                        {
+                            "name": "Macon",
+                            "lat": 32.8407,
+                            "lon": -83.6324,
+                            "link": "https://example.com/macon"
+                        },
+                        {
+                            "name": "Savannah",
+                            "lat": 32.0809,
+                            "lon": -81.0912,
+                            "link": "https://example.com/savannah"
+                        }
+                    ]
+                },
+                {
+                    "name": "Hawaii",
+                    "code": "HI",
+                    "cities": [
+                        {
+                            "name": "Honolulu",
+                            "lat": 21.3069,
+                            "lon": -157.8583,
+                            "link": "https://example.com/honolulu"
+                        },
+                        {
+                            "name": "Hilo",
+                            "lat": 19.7297,
+                            "lon": -155.09,
+                            "link": "https://example.com/hilo"
+                        },
+                        {
+                            "name": "Kailua",
+                            "lat": 21.4022,
+                            "lon": -157.7394,
+                            "link": "https://example.com/kailua"
+                        },
+                        {
+                            "name": "Kapolei",
+                            "lat": 21.3356,
+                            "lon": -158.0582,
+                            "link": "https://example.com/kapolei"
+                        },
+                        {
+                            "name": "Kaneohe",
+                            "lat": 21.409,
+                            "lon": -157.7904,
+                            "link": "https://example.com/kaneohe"
+                        }
+                    ]
+                },
+                {
+                    "name": "Idaho",
+                    "code": "ID",
+                    "cities": [
+                        {
+                            "name": "Boise",
+                            "lat": 43.615,
+                            "lon": -116.2023,
+                            "link": "https://example.com/boise"
+                        },
+                        {
+                            "name": "Meridian",
+                            "lat": 43.6121,
+                            "lon": -116.3915,
+                            "link": "https://example.com/meridian"
+                        },
+                        {
+                            "name": "Nampa",
+                            "lat": 43.5407,
+                            "lon": -116.5635,
+                            "link": "https://example.com/nampa"
+                        },
+                        {
+                            "name": "Idaho Falls",
+                            "lat": 43.4917,
+                            "lon": -112.0339,
+                            "link": "https://example.com/idahofalls"
+                        },
+                        {
+                            "name": "Pocatello",
+                            "lat": 42.8713,
+                            "lon": -112.4455,
+                            "link": "https://example.com/pocatello"
+                        }
+                    ]
+                },
+                {
+                    "name": "Illinois",
+                    "code": "IL",
+                    "cities": [
+                        {
+                            "name": "Chicago",
+                            "lat": 41.8781,
+                            "lon": -87.6298,
+                            "link": "https://example.com/chicago"
+                        },
+                        {
+                            "name": "Aurora",
+                            "lat": 41.7606,
+                            "lon": -88.3201,
+                            "link": "https://example.com/aurora"
+                        },
+                        {
+                            "name": "Naperville",
+                            "lat": 41.7508,
+                            "lon": -88.1535,
+                            "link": "https://example.com/naperville"
+                        },
+                        {
+                            "name": "Joliet",
+                            "lat": 41.525,
+                            "lon": -88.0817,
+                            "link": "https://example.com/joliet"
+                        },
+                        {
+                            "name": "Rockford",
+                            "lat": 42.2711,
+                            "lon": -89.094,
+                            "link": "https://example.com/rockford"
+                        }
+                    ]
+                },
+                {
+                    "name": "Indiana",
+                    "code": "IN",
+                    "cities": [
+                        {
+                            "name": "Indianapolis",
+                            "lat": 39.7684,
+                            "lon": -86.1581,
+                            "link": "https://example.com/indianapolis"
+                        },
+                        {
+                            "name": "Fort Wayne",
+                            "lat": 41.0793,
+                            "lon": -85.1394,
+                            "link": "https://example.com/fortwayne"
+                        },
+                        {
+                            "name": "Evansville",
+                            "lat": 37.9716,
+                            "lon": -87.5711,
+                            "link": "https://example.com/evansville"
+                        },
+                        {
+                            "name": "South Bend",
+                            "lat": 41.6764,
+                            "lon": -86.252,
+                            "link": "https://example.com/southbend"
+                        },
+                        {
+                            "name": "Carmel",
+                            "lat": 39.9784,
+                            "lon": -86.118,
+                            "link": "https://example.com/carmel"
+                        }
+                    ]
+                },
+                {
+                    "name": "Iowa",
+                    "code": "IA",
+                    "cities": [
+                        {
+                            "name": "Des Moines",
+                            "lat": 41.5868,
+                            "lon": -93.625,
+                            "link": "https://example.com/desmoines"
+                        },
+                        {
+                            "name": "Cedar Rapids",
+                            "lat": 41.9779,
+                            "lon": -91.6656,
+                            "link": "https://example.com/cedarrapids"
+                        },
+                        {
+                            "name": "Davenport",
+                            "lat": 41.5236,
+                            "lon": -90.5776,
+                            "link": "https://example.com/davenport"
+                        },
+                        {
+                            "name": "Sioux City",
+                            "lat": 42.499,
+                            "lon": -96.4003,
+                            "link": "https://example.com/siouxcity"
+                        },
+                        {
+                            "name": "Iowa City",
+                            "lat": 41.6611,
+                            "lon": -91.5302,
+                            "link": "https://example.com/iowacity"
+                        }
+                    ]
+                },
+                {
+                    "name": "Kansas",
+                    "code": "KS",
+                    "cities": [
+                        {
+                            "name": "Wichita",
+                            "lat": 37.6872,
+                            "lon": -97.3301,
+                            "link": "https://example.com/wichita"
+                        },
+                        {
+                            "name": "Overland Park",
+                            "lat": 38.9822,
+                            "lon": -94.6708,
+                            "link": "https://example.com/overlandpark"
+                        },
+                        {
+                            "name": "Kansas City",
+                            "lat": 39.1141,
+                            "lon": -94.6275,
+                            "link": "https://example.com/kansascity"
+                        },
+                        {
+                            "name": "Olathe",
+                            "lat": 38.8814,
+                            "lon": -94.8191,
+                            "link": "https://example.com/olathe"
+                        },
+                        {
+                            "name": "Topeka",
+                            "lat": 39.0558,
+                            "lon": -95.689,
+                            "link": "https://example.com/topeka"
+                        }
+                    ]
+                },
+                {
+                    "name": "Kentucky",
+                    "code": "KY",
+                    "cities": [
+                        {
+                            "name": "Louisville",
+                            "lat": 38.2527,
+                            "lon": -85.7585,
+                            "link": "https://example.com/louisville"
+                        },
+                        {
+                            "name": "Lexington",
+                            "lat": 38.0406,
+                            "lon": -84.5037,
+                            "link": "https://example.com/lexington"
+                        },
+                        {
+                            "name": "Bowling Green",
+                            "lat": 36.9685,
+                            "lon": -86.4808,
+                            "link": "https://example.com/bowlinggreen"
+                        },
+                        {
+                            "name": "Owensboro",
+                            "lat": 37.7719,
+                            "lon": -87.1112,
+                            "link": "https://example.com/owensboro"
+                        },
+                        {
+                            "name": "Covington",
+                            "lat": 39.0837,
+                            "lon": -84.5086,
+                            "link": "https://example.com/covington"
+                        }
+                    ]
+                },
+                {
+                    "name": "Louisiana",
+                    "code": "LA",
+                    "cities": [
+                        {
+                            "name": "New Orleans",
+                            "lat": 29.9511,
+                            "lon": -90.0715,
+                            "link": "https://example.com/neworleans"
+                        },
+                        {
+                            "name": "Baton Rouge",
+                            "lat": 30.4515,
+                            "lon": -91.1871,
+                            "link": "https://example.com/batonrouge"
+                        },
+                        {
+                            "name": "Shreveport",
+                            "lat": 32.5252,
+                            "lon": -93.7502,
+                            "link": "https://example.com/shreveport"
+                        },
+                        {
+                            "name": "Lafayette",
+                            "lat": 30.2241,
+                            "lon": -92.0198,
+                            "link": "https://example.com/lafayette"
+                        },
+                        {
+                            "name": "Lake Charles",
+                            "lat": 30.2266,
+                            "lon": -93.2174,
+                            "link": "https://example.com/lakecharles"
+                        }
+                    ]
+                },
+                {
+                    "name": "Maine",
+                    "code": "ME",
+                    "cities": [
+                        {
+                            "name": "Portland",
+                            "lat": 43.6591,
+                            "lon": -70.2568,
+                            "link": "https://example.com/portland"
+                        },
+                        {
+                            "name": "Lewiston",
+                            "lat": 44.1004,
+                            "lon": -70.2148,
+                            "link": "https://example.com/lewiston"
+                        },
+                        {
+                            "name": "Bangor",
+                            "lat": 44.8012,
+                            "lon": -68.7778,
+                            "link": "https://example.com/bangor"
+                        },
+                        {
+                            "name": "South Portland",
+                            "lat": 43.6415,
+                            "lon": -70.2409,
+                            "link": "https://example.com/southportland"
+                        },
+                        {
+                            "name": "Auburn",
+                            "lat": 44.0979,
+                            "lon": -70.2312,
+                            "link": "https://example.com/auburn"
+                        }
+                    ]
+                },
+                {
+                    "name": "Maryland",
+                    "code": "MD",
+                    "cities": [
+                        {
+                            "name": "Baltimore",
+                            "lat": 39.2904,
+                            "lon": -76.6122,
+                            "link": "https://example.com/baltimore"
+                        },
+                        {
+                            "name": "Frederick",
+                            "lat": 39.4143,
+                            "lon": -77.4105,
+                            "link": "https://example.com/frederick"
+                        },
+                        {
+                            "name": "Rockville",
+                            "lat": 39.084,
+                            "lon": -77.1528,
+                            "link": "https://example.com/rockville"
+                        },
+                        {
+                            "name": "Gaithersburg",
+                            "lat": 39.1434,
+                            "lon": -77.2014,
+                            "link": "https://example.com/gaithersburg"
+                        },
+                        {
+                            "name": "Bowie",
+                            "lat": 38.9428,
+                            "lon": -76.7303,
+                            "link": "https://example.com/bowie"
+                        }
+                    ]
+                },
+                {
+                    "name": "Massachusetts",
+                    "code": "MA",
+                    "cities": [
+                        {
+                            "name": "Boston",
+                            "lat": 42.3601,
+                            "lon": -71.0589,
+                            "link": "https://example.com/boston"
+                        },
+                        {
+                            "name": "Worcester",
+                            "lat": 42.2626,
+                            "lon": -71.8023,
+                            "link": "https://example.com/worcester"
+                        },
+                        {
+                            "name": "Springfield",
+                            "lat": 42.1015,
+                            "lon": -72.5898,
+                            "link": "https://example.com/springfield"
+                        },
+                        {
+                            "name": "Cambridge",
+                            "lat": 42.3736,
+                            "lon": -71.1097,
+                            "link": "https://example.com/cambridge"
+                        },
+                        {
+                            "name": "Lowell",
+                            "lat": 42.6334,
+                            "lon": -71.3162,
+                            "link": "https://example.com/lowell"
+                        }
+                    ]
+                },
+                {
+                    "name": "Michigan",
+                    "code": "MI",
+                    "cities": [
+                        {
+                            "name": "Detroit",
+                            "lat": 42.3314,
+                            "lon": -83.0458,
+                            "link": "https://example.com/detroit"
+                        },
+                        {
+                            "name": "Grand Rapids",
+                            "lat": 42.9634,
+                            "lon": -85.6681,
+                            "link": "https://example.com/grandrapids"
+                        },
+                        {
+                            "name": "Warren",
+                            "lat": 42.5145,
+                            "lon": -83.0147,
+                            "link": "https://example.com/warren"
+                        },
+                        {
+                            "name": "Sterling Heights",
+                            "lat": 42.5803,
+                            "lon": -83.0302,
+                            "link": "https://example.com/sterlingheights"
+                        },
+                        {
+                            "name": "Ann Arbor",
+                            "lat": 42.2808,
+                            "lon": -83.743,
+                            "link": "https://example.com/annarbor"
+                        }
+                    ]
+                },
+                {
+                    "name": "Minnesota",
+                    "code": "MN",
+                    "cities": [
+                        {
+                            "name": "Minneapolis",
+                            "lat": 44.9778,
+                            "lon": -93.265,
+                            "link": "https://example.com/minneapolis"
+                        },
+                        {
+                            "name": "St. Paul",
+                            "lat": 44.9537,
+                            "lon": -93.09,
+                            "link": "https://example.com/stpaul"
+                        },
+                        {
+                            "name": "Rochester",
+                            "lat": 44.0121,
+                            "lon": -92.4802,
+                            "link": "https://example.com/rochester"
+                        },
+                        {
+                            "name": "Duluth",
+                            "lat": 46.7867,
+                            "lon": -92.1005,
+                            "link": "https://example.com/duluth"
+                        },
+                        {
+                            "name": "Bloomington",
+                            "lat": 44.8408,
+                            "lon": -93.2983,
+                            "link": "https://example.com/bloomington"
+                        }
+                    ]
+                },
+                {
+                    "name": "Mississippi",
+                    "code": "MS",
+                    "cities": [
+                        {
+                            "name": "Jackson",
+                            "lat": 32.2988,
+                            "lon": -90.1848,
+                            "link": "https://example.com/jackson"
+                        },
+                        {
+                            "name": "Gulfport",
+                            "lat": 30.3674,
+                            "lon": -89.0928,
+                            "link": "https://example.com/gulfport"
+                        },
+                        {
+                            "name": "Southaven",
+                            "lat": 34.9889,
+                            "lon": -90.0126,
+                            "link": "https://example.com/southaven"
+                        },
+                        {
+                            "name": "Hattiesburg",
+                            "lat": 31.3271,
+                            "lon": -89.2903,
+                            "link": "https://example.com/hattiesburg"
+                        },
+                        {
+                            "name": "Biloxi",
+                            "lat": 30.396,
+                            "lon": -88.8853,
+                            "link": "https://example.com/biloxi"
+                        }
+                    ]
+                },
+                {
+                    "name": "Missouri",
+                    "code": "MO",
+                    "cities": [
+                        {
+                            "name": "Kansas City",
+                            "lat": 39.0997,
+                            "lon": -94.5786,
+                            "link": "https://example.com/kansascity"
+                        },
+                        {
+                            "name": "St. Louis",
+                            "lat": 38.627,
+                            "lon": -90.1994,
+                            "link": "https://example.com/stlouis"
+                        },
+                        {
+                            "name": "Springfield",
+                            "lat": 37.2089,
+                            "lon": -93.2923,
+                            "link": "https://example.com/springfield"
+                        },
+                        {
+                            "name": "Columbia",
+                            "lat": 38.9517,
+                            "lon": -92.3341,
+                            "link": "https://example.com/columbia"
+                        },
+                        {
+                            "name": "Independence",
+                            "lat": 39.0911,
+                            "lon": -94.4155,
+                            "link": "https://example.com/independence"
+                        }
+                    ]
+                },
+                {
+                    "name": "Montana",
+                    "code": "MT",
+                    "cities": [
+                        {
+                            "name": "Billings",
+                            "lat": 45.7833,
+                            "lon": -108.5007,
+                            "link": "https://example.com/billings"
+                        },
+                        {
+                            "name": "Missoula",
+                            "lat": 46.8721,
+                            "lon": -113.994,
+                            "link": "https://example.com/missoula"
+                        },
+                        {
+                            "name": "Great Falls",
+                            "lat": 47.5053,
+                            "lon": -111.3008,
+                            "link": "https://example.com/greatfalls"
+                        },
+                        {
+                            "name": "Bozeman",
+                            "lat": 45.676,
+                            "lon": -111.0429,
+                            "link": "https://example.com/bozeman"
+                        },
+                        {
+                            "name": "Butte",
+                            "lat": 46.0038,
+                            "lon": -112.5348,
+                            "link": "https://example.com/butte"
+                        }
+                    ]
+                },
+                {
+                    "name": "Nebraska",
+                    "code": "NE",
+                    "cities": [
+                        {
+                            "name": "Omaha",
+                            "lat": 41.2565,
+                            "lon": -95.9345,
+                            "link": "https://example.com/omaha"
+                        },
+                        {
+                            "name": "Lincoln",
+                            "lat": 40.8136,
+                            "lon": -96.7026,
+                            "link": "https://example.com/lincoln"
+                        },
+                        {
+                            "name": "Bellevue",
+                            "lat": 41.1544,
+                            "lon": -95.9146,
+                            "link": "https://example.com/bellevue"
+                        },
+                        {
+                            "name": "Grand Island",
+                            "lat": 40.9264,
+                            "lon": -98.342,
+                            "link": "https://example.com/grandisland"
+                        },
+                        {
+                            "name": "Kearney",
+                            "lat": 40.6995,
+                            "lon": -99.0815,
+                            "link": "https://example.com/kearney"
+                        }
+                    ]
+                },
+                {
+                    "name": "Nevada",
+                    "code": "NV",
+                    "cities": [
+                        {
+                            "name": "Las Vegas",
+                            "lat": 36.1699,
+                            "lon": -115.1398,
+                            "link": "https://example.com/lasvegas"
+                        },
+                        {
+                            "name": "Henderson",
+                            "lat": 36.0395,
+                            "lon": -114.9817,
+                            "link": "https://example.com/henderson"
+                        },
+                        {
+                            "name": "Reno",
+                            "lat": 39.5296,
+                            "lon": -119.8138,
+                            "link": "https://example.com/reno"
+                        },
+                        {
+                            "name": "North Las Vegas",
+                            "lat": 36.1989,
+                            "lon": -115.1175,
+                            "link": "https://example.com/northlasvegas"
+                        },
+                        {
+                            "name": "Sparks",
+                            "lat": 39.5349,
+                            "lon": -119.7527,
+                            "link": "https://example.com/sparks"
+                        }
+                    ]
+                },
+                {
+                    "name": "New Hampshire",
+                    "code": "NH",
+                    "cities": [
+                        {
+                            "name": "Manchester",
+                            "lat": 42.9956,
+                            "lon": -71.4548,
+                            "link": "https://example.com/manchester"
+                        },
+                        {
+                            "name": "Nashua",
+                            "lat": 42.7654,
+                            "lon": -71.4676,
+                            "link": "https://example.com/nashua"
+                        },
+                        {
+                            "name": "Concord",
+                            "lat": 43.2081,
+                            "lon": -71.5376,
+                            "link": "https://example.com/concord"
+                        },
+                        {
+                            "name": "Derry",
+                            "lat": 42.8806,
+                            "lon": -71.3273,
+                            "link": "https://example.com/derry"
+                        },
+                        {
+                            "name": "Rochester",
+                            "lat": 43.3045,
+                            "lon": -70.9756,
+                            "link": "https://example.com/rochester"
+                        }
+                    ]
+                },
+                {
+                    "name": "New Jersey",
+                    "code": "NJ",
+                    "cities": [
+                        {
+                            "name": "Newark",
+                            "lat": 40.7357,
+                            "lon": -74.1724,
+                            "link": "https://example.com/newark"
+                        },
+                        {
+                            "name": "Jersey City",
+                            "lat": 40.7178,
+                            "lon": -74.0431,
+                            "link": "https://example.com/jerseycity"
+                        },
+                        {
+                            "name": "Paterson",
+                            "lat": 40.9168,
+                            "lon": -74.1718,
+                            "link": "https://example.com/paterson"
+                        },
+                        {
+                            "name": "Elizabeth",
+                            "lat": 40.6639,
+                            "lon": -74.2107,
+                            "link": "https://example.com/elizabeth"
+                        },
+                        {
+                            "name": "Edison",
+                            "lat": 40.5187,
+                            "lon": -74.4121,
+                            "link": "https://example.com/edison"
+                        }
+                    ]
+                },
+                {
+                    "name": "New Mexico",
+                    "code": "NM",
+                    "cities": [
+                        {
+                            "name": "Albuquerque",
+                            "lat": 35.0844,
+                            "lon": -106.6504,
+                            "link": "https://example.com/albuquerque"
+                        },
+                        {
+                            "name": "Las Cruces",
+                            "lat": 32.3199,
+                            "lon": -106.7637,
+                            "link": "https://example.com/lascruces"
+                        },
+                        {
+                            "name": "Rio Rancho",
+                            "lat": 35.2328,
+                            "lon": -106.663,
+                            "link": "https://example.com/riorancho"
+                        },
+                        {
+                            "name": "Santa Fe",
+                            "lat": 35.687,
+                            "lon": -105.9378,
+                            "link": "https://example.com/santafe"
+                        },
+                        {
+                            "name": "Roswell",
+                            "lat": 33.3943,
+                            "lon": -104.523,
+                            "link": "https://example.com/roswell"
+                        }
+                    ]
+                },
+                {
+                    "name": "New York",
+                    "code": "NY",
+                    "cities": [
+                        {
+                            "name": "New York City",
+                            "lat": 40.7128,
+                            "lon": -74.006,
+                            "link": "https://example.com/nyc"
+                        },
+                        {
+                            "name": "Buffalo",
+                            "lat": 42.8864,
+                            "lon": -78.8784,
+                            "link": "https://example.com/buffalo"
+                        },
+                        {
+                            "name": "Rochester",
+                            "lat": 43.1566,
+                            "lon": -77.6088,
+                            "link": "https://example.com/rochester"
+                        },
+                        {
+                            "name": "Yonkers",
+                            "lat": 40.9312,
+                            "lon": -73.8988,
+                            "link": "https://example.com/yonkers"
+                        },
+                        {
+                            "name": "Syracuse",
+                            "lat": 43.0481,
+                            "lon": -76.1474,
+                            "link": "https://example.com/syracuse"
+                        }
+                    ]
+                },
+                {
+                    "name": "North Carolina",
+                    "code": "NC",
+                    "cities": [
+                        {
+                            "name": "Charlotte",
+                            "lat": 35.2271,
+                            "lon": -80.8431,
+                            "link": "https://example.com/charlotte"
+                        },
+                        {
+                            "name": "Raleigh",
+                            "lat": 35.7796,
+                            "lon": -78.6382,
+                            "link": "https://example.com/raleigh"
+                        },
+                        {
+                            "name": "Greensboro",
+                            "lat": 36.0726,
+                            "lon": -79.792,
+                            "link": "https://example.com/greensboro"
+                        },
+                        {
+                            "name": "Durham",
+                            "lat": 35.994,
+                            "lon": -78.8986,
+                            "link": "https://example.com/durham"
+                        },
+                        {
+                            "name": "Winston-Salem",
+                            "lat": 36.0999,
+                            "lon": -80.2442,
+                            "link": "https://example.com/winstonsalem"
+                        }
+                    ]
+                },
+                {
+                    "name": "North Dakota",
+                    "code": "ND",
+                    "cities": [
+                        {
+                            "name": "Fargo",
+                            "lat": 46.8772,
+                            "lon": -96.7898,
+                            "link": "https://example.com/fargo"
+                        },
+                        {
+                            "name": "Bismarck",
+                            "lat": 46.8083,
+                            "lon": -100.7837,
+                            "link": "https://example.com/bismarck"
+                        },
+                        {
+                            "name": "Grand Forks",
+                            "lat": 47.9253,
+                            "lon": -97.0329,
+                            "link": "https://example.com/grandforks"
+                        },
+                        {
+                            "name": "Minot",
+                            "lat": 48.2325,
+                            "lon": -101.2963,
+                            "link": "https://example.com/minot"
+                        },
+                        {
+                            "name": "West Fargo",
+                            "lat": 46.874,
+                            "lon": -96.9003,
+                            "link": "https://example.com/westfargo"
+                        }
+                    ]
+                },
+                {
+                    "name": "Ohio",
+                    "code": "OH",
+                    "cities": [
+                        {
+                            "name": "Columbus",
+                            "lat": 39.9612,
+                            "lon": -82.9988,
+                            "link": "https://example.com/columbus"
+                        },
+                        {
+                            "name": "Cleveland",
+                            "lat": 41.4993,
+                            "lon": -81.6944,
+                            "link": "https://example.com/cleveland"
+                        },
+                        {
+                            "name": "Cincinnati",
+                            "lat": 39.1031,
+                            "lon": -84.512,
+                            "link": "https://example.com/cincinnati"
+                        },
+                        {
+                            "name": "Toledo",
+                            "lat": 41.6528,
+                            "lon": -83.5379,
+                            "link": "https://example.com/toledo"
+                        },
+                        {
+                            "name": "Akron",
+                            "lat": 41.0814,
+                            "lon": -81.519,
+                            "link": "https://example.com/akron"
+                        }
+                    ]
+                },
+                {
+                    "name": "Oklahoma",
+                    "code": "OK",
+                    "cities": [
+                        {
+                            "name": "Oklahoma City",
+                            "lat": 35.4676,
+                            "lon": -97.5164,
+                            "link": "https://example.com/oklahomacity"
+                        },
+                        {
+                            "name": "Tulsa",
+                            "lat": 36.1539,
+                            "lon": -95.9928,
+                            "link": "https://example.com/tulsa"
+                        },
+                        {
+                            "name": "Norman",
+                            "lat": 35.2226,
+                            "lon": -97.4395,
+                            "link": "https://example.com/norman"
+                        },
+                        {
+                            "name": "Broken Arrow",
+                            "lat": 36.0609,
+                            "lon": -95.7975,
+                            "link": "https://example.com/brokenarrow"
+                        },
+                        {
+                            "name": "Edmond",
+                            "lat": 35.6528,
+                            "lon": -97.4781,
+                            "link": "https://example.com/edmond"
+                        }
+                    ]
+                },
+                {
+                    "name": "Oregon",
+                    "code": "OR",
+                    "cities": [
+                        {
+                            "name": "Portland",
+                            "lat": 45.5152,
+                            "lon": -122.6784,
+                            "link": "https://example.com/portland"
+                        },
+                        {
+                            "name": "Eugene",
+                            "lat": 44.0521,
+                            "lon": -123.0868,
+                            "link": "https://example.com/eugene"
+                        },
+                        {
+                            "name": "Salem",
+                            "lat": 44.9429,
+                            "lon": -123.0351,
+                            "link": "https://example.com/salem"
+                        },
+                        {
+                            "name": "Gresham",
+                            "lat": 45.5001,
+                            "lon": -122.4302,
+                            "link": "https://example.com/gresham"
+                        },
+                        {
+                            "name": "Hillsboro",
+                            "lat": 45.5229,
+                            "lon": -122.9898,
+                            "link": "https://example.com/hillsboro"
+                        }
+                    ]
+                },
+                {
+                    "name": "Pennsylvania",
+                    "code": "PA",
+                    "cities": [
+                        {
+                            "name": "Philadelphia",
+                            "lat": 39.9526,
+                            "lon": -75.1652,
+                            "link": "https://example.com/philadelphia"
+                        },
+                        {
+                            "name": "Pittsburgh",
+                            "lat": 40.4406,
+                            "lon": -79.9959,
+                            "link": "https://example.com/pittsburgh"
+                        },
+                        {
+                            "name": "Allentown",
+                            "lat": 40.6084,
+                            "lon": -75.4902,
+                            "link": "https://example.com/allentown"
+                        },
+                        {
+                            "name": "Erie",
+                            "lat": 42.1292,
+                            "lon": -80.0851,
+                            "link": "https://example.com/erie"
+                        },
+                        {
+                            "name": "Reading",
+                            "lat": 40.3356,
+                            "lon": -75.9269,
+                            "link": "https://example.com/reading"
+                        }
+                    ]
+                },
+                {
+                    "name": "Rhode Island",
+                    "code": "RI",
+                    "cities": [
+                        {
+                            "name": "Providence",
+                            "lat": 41.824,
+                            "lon": -71.4128,
+                            "link": "https://example.com/providence"
+                        },
+                        {
+                            "name": "Warwick",
+                            "lat": 41.7001,
+                            "lon": -71.4162,
+                            "link": "https://example.com/warwick"
+                        },
+                        {
+                            "name": "Cranston",
+                            "lat": 41.7798,
+                            "lon": -71.4373,
+                            "link": "https://example.com/cranston"
+                        },
+                        {
+                            "name": "Pawtucket",
+                            "lat": 41.8787,
+                            "lon": -71.3826,
+                            "link": "https://example.com/pawtucket"
+                        },
+                        {
+                            "name": "East Providence",
+                            "lat": 41.8137,
+                            "lon": -71.3701,
+                            "link": "https://example.com/eastprovidence"
+                        }
+                    ]
+                },
+                {
+                    "name": "South Carolina",
+                    "code": "SC",
+                    "cities": [
+                        {
+                            "name": "Charleston",
+                            "lat": 32.7765,
+                            "lon": -79.9311,
+                            "link": "https://example.com/charleston"
+                        },
+                        {
+                            "name": "Columbia",
+                            "lat": 34.0007,
+                            "lon": -81.0348,
+                            "link": "https://example.com/columbia"
+                        },
+                        {
+                            "name": "North Charleston",
+                            "lat": 32.8546,
+                            "lon": -79.9748,
+                            "link": "https://example.com/northcharleston"
+                        },
+                        {
+                            "name": "Mount Pleasant",
+                            "lat": 32.8323,
+                            "lon": -79.8284,
+                            "link": "https://example.com/mountpleasant"
+                        },
+                        {
+                            "name": "Rock Hill",
+                            "lat": 34.9249,
+                            "lon": -81.0251,
+                            "link": "https://example.com/rockhill"
+                        }
+                    ]
+                },
+                {
+                    "name": "South Dakota",
+                    "code": "SD",
+                    "cities": [
+                        {
+                            "name": "Sioux Falls",
+                            "lat": 43.5446,
+                            "lon": -96.7311,
+                            "link": "https://example.com/siouxfalls"
+                        },
+                        {
+                            "name": "Rapid City",
+                            "lat": 44.0805,
+                            "lon": -103.231,
+                            "link": "https://example.com/rapidcity"
+                        },
+                        {
+                            "name": "Aberdeen",
+                            "lat": 45.4647,
+                            "lon": -98.4865,
+                            "link": "https://example.com/aberdeen"
+                        },
+                        {
+                            "name": "Brookings",
+                            "lat": 44.3069,
+                            "lon": -96.7984,
+                            "link": "https://example.com/brookings"
+                        },
+                        {
+                            "name": "Watertown",
+                            "lat": 44.8994,
+                            "lon": -97.1151,
+                            "link": "https://example.com/watertown"
+                        }
+                    ]
+                },
+                {
+                    "name": "Tennessee",
+                    "code": "TN",
+                    "cities": [
+                        {
+                            "name": "Nashville",
+                            "lat": 36.1627,
+                            "lon": -86.7816,
+                            "link": "https://example.com/nashville"
+                        },
+                        {
+                            "name": "Memphis",
+                            "lat": 35.1495,
+                            "lon": -90.049,
+                            "link": "https://example.com/memphis"
+                        },
+                        {
+                            "name": "Knoxville",
+                            "lat": 35.9606,
+                            "lon": -83.9207,
+                            "link": "https://example.com/knoxville"
+                        },
+                        {
+                            "name": "Chattanooga",
+                            "lat": 35.0456,
+                            "lon": -85.3097,
+                            "link": "https://example.com/chattanooga"
+                        },
+                        {
+                            "name": "Clarksville",
+                            "lat": 36.5298,
+                            "lon": -87.3595,
+                            "link": "https://example.com/clarksville"
+                        }
+                    ]
+                },
+                {
+                    "name": "Texas",
+                    "code": "TX",
+                    "cities": [
+                        {
+                            "name": "Houston",
+                            "lat": 29.7604,
+                            "lon": -95.3698,
+                            "link": "https://example.com/houston"
+                        },
+                        {
+                            "name": "San Antonio",
+                            "lat": 29.4241,
+                            "lon": -98.4936,
+                            "link": "https://example.com/sanantonio"
+                        },
+                        {
+                            "name": "Dallas",
+                            "lat": 32.7767,
+                            "lon": -96.797,
+                            "link": "https://example.com/dallas"
+                        },
+                        {
+                            "name": "Austin",
+                            "lat": 30.2672,
+                            "lon": -97.7431,
+                            "link": "https://example.com/austin"
+                        },
+                        {
+                            "name": "Fort Worth",
+                            "lat": 32.7555,
+                            "lon": -97.3308,
+                            "link": "https://example.com/fortworth"
+                        }
+                    ]
+                },
+                {
+                    "name": "Utah",
+                    "code": "UT",
+                    "cities": [
+                        {
+                            "name": "Salt Lake City",
+                            "lat": 40.7608,
+                            "lon": -111.891,
+                            "link": "https://example.com/saltlakecity"
+                        },
+                        {
+                            "name": "West Valley City",
+                            "lat": 40.6916,
+                            "lon": -112.0011,
+                            "link": "https://example.com/westvalleycity"
+                        },
+                        {
+                            "name": "Provo",
+                            "lat": 40.2338,
+                            "lon": -111.6585,
+                            "link": "https://example.com/provo"
+                        },
+                        {
+                            "name": "West Jordan",
+                            "lat": 40.6097,
+                            "lon": -111.9391,
+                            "link": "https://example.com/westjordan"
+                        },
+                        {
+                            "name": "Orem",
+                            "lat": 40.2969,
+                            "lon": -111.6946,
+                            "link": "https://example.com/orem"
+                        }
+                    ]
+                },
+                {
+                    "name": "Vermont",
+                    "code": "VT",
+                    "cities": [
+                        {
+                            "name": "Burlington",
+                            "lat": 44.4759,
+                            "lon": -73.2121,
+                            "link": "https://example.com/burlington"
+                        },
+                        {
+                            "name": "South Burlington",
+                            "lat": 44.4669,
+                            "lon": -73.1709,
+                            "link": "https://example.com/southburlington"
+                        },
+                        {
+                            "name": "Rutland",
+                            "lat": 43.6106,
+                            "lon": -72.9726,
+                            "link": "https://example.com/rutland"
+                        },
+                        {
+                            "name": "Barre",
+                            "lat": 44.197,
+                            "lon": -72.5021,
+                            "link": "https://example.com/barre"
+                        },
+                        {
+                            "name": "Montpelier",
+                            "lat": 44.2601,
+                            "lon": -72.5754,
+                            "link": "https://example.com/montpelier"
+                        }
+                    ]
+                },
+                {
+                    "name": "Virginia",
+                    "code": "VA",
+                    "cities": [
+                        {
+                            "name": "Virginia Beach",
+                            "lat": 36.8529,
+                            "lon": -75.978,
+                            "link": "https://example.com/virginiabeach"
+                        },
+                        {
+                            "name": "Norfolk",
+                            "lat": 36.8508,
+                            "lon": -76.2859,
+                            "link": "https://example.com/norfolk"
+                        },
+                        {
+                            "name": "Chesapeake",
+                            "lat": 36.7682,
+                            "lon": -76.2875,
+                            "link": "https://example.com/chesapeake"
+                        },
+                        {
+                            "name": "Richmond",
+                            "lat": 37.5407,
+                            "lon": -77.436,
+                            "link": "https://example.com/richmond"
+                        },
+                        {
+                            "name": "Newport News",
+                            "lat": 37.0871,
+                            "lon": -76.473,
+                            "link": "https://example.com/newportnews"
+                        }
+                    ]
+                },
+                {
+                    "name": "Washington",
+                    "code": "WA",
+                    "cities": [
+                        {
+                            "name": "Seattle",
+                            "lat": 47.6062,
+                            "lon": -122.3321,
+                            "link": "https://example.com/seattle"
+                        },
+                        {
+                            "name": "Spokane",
+                            "lat": 47.6588,
+                            "lon": -117.426,
+                            "link": "https://example.com/spokane"
+                        },
+                        {
+                            "name": "Tacoma",
+                            "lat": 47.2529,
+                            "lon": -122.4443,
+                            "link": "https://example.com/tacoma"
+                        },
+                        {
+                            "name": "Vancouver",
+                            "lat": 45.6387,
+                            "lon": -122.6615,
+                            "link": "https://example.com/vancouver"
+                        },
+                        {
+                            "name": "Bellevue",
+                            "lat": 47.6101,
+                            "lon": -122.2015,
+                            "link": "https://example.com/bellevue"
+                        }
+                    ]
+                },
+                {
+                    "name": "West Virginia",
+                    "code": "WV",
+                    "cities": [
+                        {
+                            "name": "Charleston",
+                            "lat": 38.3498,
+                            "lon": -81.6326,
+                            "link": "https://example.com/charleston"
+                        },
+                        {
+                            "name": "Huntington",
+                            "lat": 38.4192,
+                            "lon": -82.4452,
+                            "link": "https://example.com/huntington"
+                        },
+                        {
+                            "name": "Morgantown",
+                            "lat": 39.6295,
+                            "lon": -79.9559,
+                            "link": "https://example.com/morgantown"
+                        },
+                        {
+                            "name": "Parkersburg",
+                            "lat": 39.2667,
+                            "lon": -81.5615,
+                            "link": "https://example.com/parkersburg"
+                        },
+                        {
+                            "name": "Wheeling",
+                            "lat": 40.0639,
+                            "lon": -80.7209,
+                            "link": "https://example.com/wheeling"
+                        }
+                    ]
+                },
+                {
+                    "name": "Wisconsin",
+                    "code": "WI",
+                    "cities": [
+                        {
+                            "name": "Milwaukee",
+                            "lat": 43.0389,
+                            "lon": -87.9065,
+                            "link": "https://example.com/milwaukee"
+                        },
+                        {
+                            "name": "Madison",
+                            "lat": 43.0731,
+                            "lon": -89.4012,
+                            "link": "https://example.com/madison"
+                        },
+                        {
+                            "name": "Green Bay",
+                            "lat": 44.5133,
+                            "lon": -88.0133,
+                            "link": "https://example.com/greenbay"
+                        },
+                        {
+                            "name": "Kenosha",
+                            "lat": 42.5847,
+                            "lon": -87.8212,
+                            "link": "https://example.com/kenosha"
+                        },
+                        {
+                            "name": "Racine",
+                            "lat": 42.7261,
+                            "lon": -87.7829,
+                            "link": "https://example.com/racine"
+                        }
+                    ]
+                },
+                {
+                    "name": "Wyoming",
+                    "code": "WY",
+                    "cities": [
+                        {
+                            "name": "Cheyenne",
+                            "lat": 41.14,
+                            "lon": -104.8202,
+                            "link": "https://example.com/cheyenne"
+                        },
+                        {
+                            "name": "Casper",
+                            "lat": 42.8666,
+                            "lon": -106.3131,
+                            "link": "https://example.com/casper"
+                        },
+                        {
+                            "name": "Laramie",
+                            "lat": 41.3114,
+                            "lon": -105.5911,
+                            "link": "https://example.com/laramie"
+                        },
+                        {
+                            "name": "Gillette",
+                            "lat": 44.2911,
+                            "lon": -105.5022,
+                            "link": "https://example.com/gillette"
+                        },
+                        {
+                            "name": "Rock Springs",
+                            "lat": 41.5875,
+                            "lon": -109.2029,
+                            "link": "https://example.com/rocksprings"
+                        }
+                    ]
+                }
+            ]
         }
-      ],
-      "BD": [
-        {
-          "name": "Dhaka Division",
-          "code": "DH",
-          "cities": [
-            {
-              "name": "Dhaka",
-              "lat": 23.8103,
-              "lon": 90.4125,
-              "link": ""
-            }
-          ]
-        },
-        {
-          "name": "Khulna Division",
-          "code": "KH",
-          "cities": [
-            {
-              "name": "Khulna",
-              "lat": 22.84,
-              "lon": 89.55,
-              "link": "https://example.com/khulna-special"
-            },
-            {
-              "name": "Kushtia",
-              "lat": 23.9,
-              "lon": 89.12,
-              "link": ""
-            }
-          ]
-        }
-      ]
     }
-  },
-  "premium": {
-    "default_link": "https://example.com/premium-default",
-    "countries": {
-      "US": [
-        {
-          "code": "NY",
-          "name": "New York",
-          "cities": [
-            {
-              "name": "New York City",
-              "lat": 40.7128,
-              "lon": -74.006,
-              "link": "https://example.com/nyc-premium"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "Model2": {
-    "default_link": "https://example.co/model2",
-    "countries": {
-      "BD": [
-        {
-          "name": "Dhaka Division",
-          "code": "",
-          "cities": [
-            {
-              "name": "Dhaka",
-              "lat": 23.759,
-              "lon": 90.379,
-              "link": "https://dhaka.co"
-            }
-          ]
-        },
-        {
-          "name": "Khulna Division",
-          "code": "",
-          "cities": [
-            {
-              "name": "Khulna",
-              "lat": 22.82,
-              "lon": 89.55,
-              "link": ""
-            }
-          ]
-        }
-      ]
-    }
-  }
 }
